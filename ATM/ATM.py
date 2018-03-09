@@ -45,16 +45,16 @@ def deposit():
 def withdraw():
     global Net_balance
     #If amount is zero returns to atm function
-    if float(Net_balance) <= 0:
+    if float(Net_balance) <= 0.0:
         print ("\nWithdrawl Impossible! \nYour Account Balance = Rs",Net_balance,"\nPlease Deposit Amount First!\n")
         return
     #If amount is not zero
     else:
-        withdraw = float(input("Enter Amount In Rupees: "))
+        with_draw = float(input("Enter Amount In Rupees: "))
         #Checks if amount in withdraw is less than amount in counter
-        if float(withdraw) <= float(Net_balance):
-            if float(withdraw) > 0:
-                Net_balance -= float(withdraw)
+        if with_draw <= Net_balance:
+            if float(with_draw) > 0.0:
+                Net_balance -= float(with_draw)
                 return
             else:
                 print ("\nPlease Enter Right Amount! \n")
@@ -62,4 +62,4 @@ def withdraw():
 
         else:
             print ("\nWithdrawl Impossible! \nYour Acount Balance = Rs",Net_balance,"\n")
-            return withdraw()
+        return withdraw()

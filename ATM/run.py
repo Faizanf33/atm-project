@@ -1,4 +1,4 @@
-from ATM import atm  		#Imports atm function from ATM.py file 
+from ATM import atm  		#Imports atm function from ATM.py file
 import os
 
 user_name = ""   		#global declaration of user_name,filename,d(dictionary)
@@ -9,10 +9,10 @@ def login_user(d): 		#main funtion which calls further funtions,execution starts
     data()			#data funtion is called to check or make changes in it
     user = input("Please Select One \n1. Login \n2. Create New Account \n0. Exit \n")
 
-    if int(user) == 1:	
+    if int(user) == 1:
         login()			#login function called for further execution
 
-    elif int(user) == 2:	
+    elif int(user) == 2:
         new_account()		#new_account function called for further execution
 
     elif int(user) == 0:
@@ -21,22 +21,25 @@ def login_user(d): 		#main funtion which calls further funtions,execution starts
 
     else:
         return login_user()	#in case any other number is entered except those listed above
-				#recursion(main function called again) 
-    return   
+				#recursion(main function called again)
+    return
 
 def data():			#when 1 is entered from main(login_user)
-    global filename		
-    global d
-    directory = "/home/faizanf33/Desktop/ATM"	#Path for file
-    name = "usersdata.txt"			#name of file
-    filename = os.path.join(directory, name)	#joining directory with file for further use
-    with open(filename, "r") as f:		#opened file in data read mode
-        l = f.read().split(',')			#
-        for i in l:
-            a = i.split(":")
-            d[a[0]] = a[1]
-        #print (d)
-    return d
+	global filename
+	global d
+	directory = "/home/faizanf33/Documents/Git-Work/ATM/ATM"	#Path for file
+	name = "usersdata.txt"						#name of file
+	filename = os.path.join(directory, name)	#joining directory with file for further use
+	with open(filename, "r") as f:
+		if os.stat("usersdata.txt").st_size <= 12:
+			return None
+		else:
+			l = f.read().split(',')					#opened file in data read mode
+			for i in l:
+				a = i.split(":")
+				d[a[0]] = a[1]
+			#print ("dict:",d)
+			return d
 
 
 
@@ -60,7 +63,6 @@ def login():
 
 
 def new_account():
-    #   print (filename)
     user_name = input("Please Type Your Name : ")
     pin_count = 0
     while pin_count != 3:
