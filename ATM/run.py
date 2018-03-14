@@ -30,7 +30,9 @@ def data():			#when 1 is entered from main(login_user)
 	directory = "/home/faizanf33/Documents/Git-Work/ATM/ATM"	#Path for file
 	name = "usersdata.txt"						#name of file
 	filename = os.path.join(directory, name)	#joining directory with file for further use
-	with open(filename, "r") as f:
+    with open(filename, "a") as f:
+        f.close()
+    with open(filename, "r") as f:
 		if os.stat("usersdata.txt").st_size <= 12:
 			return None
 		else:
