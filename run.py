@@ -5,11 +5,18 @@ import sys
 user_name = ""   								#global declaration of user_name,filename,d(dictionary)
 filename = ""
 d = {}
+directory = "Data"	#Path for file
+name = "usersdata.txt"						#name of file
+filename = os.path.join(directory, name)	#joining directory with file for further use
 
-def login_user(d): 								#main funtion which calls further funtions,execution starts from here
+
+def login_user():
+    global d 								#main funtion which calls further funtions,execution starts from here
     data()										#data funtion is called to check or make changes in it
     user = input("Please Select One \n1. Login \n2. Create New Account \n0. Exit \n")
-
+    if not user.isdigit():
+        print ("Invalid Selection!")
+        return login_user()
     if int(user) == 1:
         login()									#login function called for further execution
 
@@ -21,28 +28,28 @@ def login_user(d): 								#main funtion which calls further funtions,execution 
     											#exits the main funtion
 
     else:
+        print ("Invalid Selection!")
         return login_user()						#in case any other number is entered except those listed above
 												#recursion(main function called again)
     return
 
 def data():										#when 1 is entered from main(login_user)
-	global filename
-	global d
-	directory = "Data"	#Path for file
-	name = "usersdata.txt"						#name of file
-	filename = os.path.join(directory, name)	#joining directory with file for further use
-	with open(filename, "a") as f:
-		f.close()
-	with open(filename, "r") as f:
-		if False:                               #os.path.stat("usersdata.txt").st_size <= 12:
-			return None
-		else:
-			l = f.read().split(',')				#opened file in data read mode
-			for i in l:
-				a = i.split(":")
-				d[a[0]] = a[1]
+    global filename
+    global d
+    with open(filename, "a+") as ap:
+        ap.close()
+    with open(filename, "r+") as rd:
+        if False:                               #os.path.stat("usersdata.txt").st_size <= 12:
+            return None
+        else:
+            l = rd.read().split(',')				#opened file in data read mode
+            #print (l)
+            for i in l:
+                #print (i)
+                a = i.split(":")
+                d[a[0]] = a[1]
 			#print ("dict:",d)
-			return d
+            return d
 
 
 
@@ -59,38 +66,46 @@ def login():
                 entry += 1
                 print ("Incorrect Pin")
         print ("Login Unsuccessful")
-        return login_user(d)
+        return login_user()
     else:
         print ("Invalid User")
-        return login_user(d)
+        return login_user()
 
 
 def new_account():
     #   print (filename)
     user_name = input("Please Type Your Name : ")
+    if not user_name.isalpha():
+        print ("Invalid Name")
+        return new_account()
     pin_count = 0
     while pin_count != 3:
         pin = str(input ("Enter 4-Digit Pin : "))
-        confirm_pin = str(input ("Confirm Pin : "))
-        if pin == confirm_pin:
-            print ("Account Name :",user_name)
-            confirm = input("Please Confirm \n1. Yes \n2. No \n")
+        print (len(pin))
+        if (len(pin) == 4) and (pin.isdigit() == True):
+            confirm_pin = str(input ("Confirm Pin : "))
+            if pin == confirm_pin:
+                print ("Account Name :",user_name,"\nPin :",pin)
+                confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
-            if int(confirm) == 1:
-                with open(filename, "a") as f:
-                    w = ","+user_name+":"+pin
-                    f.write(w)
-                    f.close()
-                    print ("Account Created Successfully! \n")
-                    return login_user(d)
-            elif int(confirm) == 2:
-                return new_account()
+                if int(confirm) == 1:
+                    with open(filename, "a") as wr:
+                        new = ","+user_name+":"+pin
+                        wr.write(new)
+                        wr.close()
+                        print ("Account Created Successfully! \n")
+                        return login_user()
+                elif int(confirm) == 2:
+                    return new_account()
 
+            else:
+                print ("Your Pin Did Not Match!")
+                pin_count +=1
         else:
-            print ("Your Pin Did Not Match!")
-            pin_count +=1
+            pin_count = 0
     print ("Account Not Created!")
     return login()
 
 
-login_user(d)
+login_user()
+#new_account()
