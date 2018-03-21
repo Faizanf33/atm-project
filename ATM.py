@@ -1,7 +1,12 @@
-Net_balance = 0.0  #Counter for user amount
+import os
+net_balance = 0.0  #Counter for user amount
+
+directory = "Data"	#Path for file
+name = "usersdata.txt"						#name of file
+filename = os.path.join(directory, name)	#joining directory with file for further use
 
 #Atm function called after successfull login
-def atm(user_name):
+def atm(user_name,Net_balance,Pin):
     from datetime import datetime
     print(datetime.now(),"\nATM Service! \n\nWelcome",user_name)
     #User input for selection
@@ -9,15 +14,16 @@ def atm(user_name):
 
     #Starts the loop
     while int(Opr) != 0:
-        global Net_balance
+        global net_balance
+        net_balance += Net_balance
         if int(Opr) == 1:   #Prints amount in counter
-            print ("\nYour Acount Balance = Rs",Net_balance,"\n")
+            print ("\nYour Acount Balance = Rs",net_balance,"\n")
 
         elif int(Opr) == 2:
-            deposit()       #Deposit function is called
+            deposit(net_balance)       #Deposit function is called
 
         elif int(Opr) == 3:
-            withdraw()      #Withdraw function is called
+            withdraw(net_balance)      #Withdraw function is called
 
         else:
             print ("Wrong Option!")
@@ -26,40 +32,45 @@ def atm(user_name):
         #Loop continues untill input equals '0'
         Opr = input("1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
     print ("Thanks For Using ATM! \nWe Hope You Are Satisfied With Our Service.\nHave A Nice Day Ahead.")
+
+    with open(filename,'a+') as ap:
+        re_new = "\n"+user_name+":"+str(Pin)+","+str(net_balance)
+        ap.write(re_new)
+        ap.close()
     return
 
 #Deposit funtion starts when called by atm function
-def deposit():
+def deposit(Net_balance):
+    global net_balance
     #User input for deposit amount
     deposit = float(input("Enter Amount In Rupees: ")) #Input is converted to float
 
     if float(deposit) >= 0: #Check for negetive values
-        global Net_balance
-        Net_balance += float(deposit)  #Deposit amount is incremented in counter
-        return
+        net_balance += float(deposit)  #Deposit amount is incremented in counter
+        return net_balance
     else:
         print ("\nPlease Enter Right Amount! \n") #If user inputs negetive amount
-        return deposit()
+        return deposit(net_balance)
 
 #deposit funtion starts when called by atm function
-def withdraw():
-    global Net_balance
+def withdraw(Net_balance):
+    global net_balance
     #If amount is zero returns to atm function
-    if float(Net_balance) <= 0.0:
-        print ("\nWithdrawl Impossible! \nYour Account Balance = Rs",Net_balance,"\nPlease Deposit Amount First!\n")
+    if float(net_balance) <= 0.0:
+        print ("\nWithdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
         return
     #If amount is not zero
     else:
         with_draw = float(input("Enter Amount In Rupees: "))
         #Checks if amount in withdraw is less than amount in counter
-        if with_draw <= Net_balance:
+        if with_draw <= net_balance:
             if float(with_draw) > 0.0:
-                Net_balance -= float(with_draw)
-                return
+                net_balance -= float(with_draw)
+                return net_balance
             else:
                 print ("\nPlease Enter Right Amount! \n")
-                return withdraw()
+                return withdraw(net_balance)
 
         else:
-            print ("\nWithdrawl Impossible! \nYour Acount Balance = Rs",Net_balance,"\n")
-        return withdraw()
+            print ("\nWithdrawl Impossible! \nYour Acount Balance = Rs",net_balance,"\n")
+        return withdraw(net_balance)
