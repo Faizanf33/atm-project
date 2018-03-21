@@ -10,12 +10,11 @@ def atm(user_name,Net_balance,Pin):
     from datetime import datetime
     print(datetime.now(),"\nATM Service! \n\nWelcome",user_name)
     #User input for selection
-    Opr = input("Please Type Any Option Provided Below And Press Enter. \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
-
-    #Starts the loop
+    global net_balance
+    net_balance += Net_balance
+    Opr = input("Please Type Any Option Provided Below And Press Enter. \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")    #Starts the loop
     while int(Opr) != 0:
-        global net_balance
-        net_balance += Net_balance
+
         if int(Opr) == 1:   #Prints amount in counter
             print ("\nYour Acount Balance = Rs",net_balance,"\n")
 
@@ -47,7 +46,7 @@ def deposit(Net_balance):
 
     if float(deposit) >= 0: #Check for negetive values
         net_balance += float(deposit)  #Deposit amount is incremented in counter
-        return net_balance
+        return
     else:
         print ("\nPlease Enter Right Amount! \n") #If user inputs negetive amount
         return deposit(net_balance)
@@ -66,7 +65,7 @@ def withdraw(Net_balance):
         if with_draw <= net_balance:
             if float(with_draw) > 0.0:
                 net_balance -= float(with_draw)
-                return net_balance
+                return
             else:
                 print ("\nPlease Enter Right Amount! \n")
                 return withdraw(net_balance)

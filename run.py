@@ -39,7 +39,7 @@ def data():										#when 1 is entered from main(login_user)
     global d
     with open(filename, "a+") as ap:
         #file size shorter than 13 bit
-        if os.stat(filename).st_size <= 13:
+        if os.stat(filename).st_size <= 0:
             ap.write('abc:1234,0.0')
             ap.close()
             print ("Please create an account first!")
