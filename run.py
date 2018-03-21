@@ -1,6 +1,7 @@
 from ATM import atm  							#Imports atm function from ATM.py file
 import os
 import sys
+import re
 
 user_name = ""   								#global declaration of user_name,filename,d(dictionary)
 filename = ""
@@ -34,22 +35,23 @@ def login_user():
     return
 
 def data():										#when 1 is entered from main(login_user)
-    global filename
+    global filename,name
     global d
     with open(filename, "a+") as ap:
-        ap.close()
-    with open(filename, "r+") as rd:
-        if False:                               #os.path.stat("usersdata.txt").st_size <= 12:
-            return None
+        #file size shorter than 13 bit
+        if os.stat(filename).st_size <= 13:
+            ap.write('abc:1234,0.0')
+            ap.close()
+            print ("Please create an account first!")
+            return
         else:
-            l = rd.read().split(',')				#opened file in data read mode
-            #print (l)
-            for i in l:
-                #print (i)
-                a = i.split(":")
-                d[a[0]] = a[1]
-			#print ("dict:",d)
-            return d
+            with open(filename, "r+") as rd:
+                id_user = rd.read().split("\n")				#opened file in data read mode
+                for i in id_user:
+                    a = re.split("[ : , ]",i)
+                    a[1],a[2] = int(a[1]),float(a[2])
+                    d[a[0]] = a[1],a[2]
+                return d
 
 
 
@@ -59,9 +61,11 @@ def login():
     entry = 0
     if user_name in d.keys():
         while int(entry) != 3:
-            pin = str(input("Enter 4-Digit Pin : "))
-            if pin == d[user_name]:
-                return atm(user_name)
+            pin = int(input("Enter 4-Digit Pin : "))
+            if pin == d[user_name][0]:
+                Net_balance = d[user_name][1]
+                Pin = d[user_name][0]
+                return atm(user_name,Net_balance,Pin)
             else:
                 entry += 1
                 print ("Incorrect Pin")
@@ -73,7 +77,6 @@ def login():
 
 
 def new_account():
-    #   print (filename)
     user_name = input("Please Type Your Name : ")
     if not user_name.isalpha():
         print ("Invalid Name")
@@ -81,7 +84,6 @@ def new_account():
     pin_count = 0
     while pin_count != 3:
         pin = str(input ("Enter 4-Digit Pin : "))
-        print (len(pin))
         if (len(pin) == 4) and (pin.isdigit() == True):
             confirm_pin = str(input ("Confirm Pin : "))
             if pin == confirm_pin:
@@ -90,7 +92,7 @@ def new_account():
 
                 if int(confirm) == 1:
                     with open(filename, "a") as wr:
-                        new = ","+user_name+":"+pin
+                        new = "\n"+user_name+":"+pin+",0.0"
                         wr.write(new)
                         wr.close()
                         print ("Account Created Successfully! \n")
@@ -108,4 +110,3 @@ def new_account():
 
 
 login_user()
-#new_account()
