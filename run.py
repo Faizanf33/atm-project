@@ -37,22 +37,26 @@ def login_user():
 def data():										#when 1 is entered from main(login_user)
     global filename,name
     global d
-    with open(filename, "a+") as ap:
-        #file size shorter than 13 bit
-        if os.stat(filename).st_size <= 0:
-            ap.write('abc:1234,0.0')
-            ap.close()
-            print ("Please create an account first!")
-            return
-        else:
-            with open(filename, "r+") as rd:
-                id_user = rd.read().split("\n")				#opened file in data read mode
-                for i in id_user:
-                    a = re.split("[ : , ]",i)
-                    a[1],a[2] = int(a[1]),float(a[2])
-                    d[a[0]] = a[1],a[2]
-                return d
-
+    try:
+        with open(filename, "a+") as ap:
+            #file size shorter than 13 bit
+            if os.stat(filename).st_size <= 0:
+                ap.write('abc:1234,0.0')
+                ap.close()
+                print ("Please create an account first!")
+                return
+            else:
+                with open(filename, "r+") as rd:
+                    id_user = rd.read().split("\n")				#opened file in data read mode
+                    for i in id_user:
+                        a = re.split("[ : , ]",i)
+                        a[1],a[2] = int(a[1]),float(a[2])
+                        d[a[0]] = a[1],a[2]
+                    return d
+    except:
+        FileNotFoundError
+        os.mkdir("Data")
+        data()
 
 
 def login():
@@ -90,14 +94,16 @@ def new_account():
                 print ("Account Name :",user_name,"\nPin :",pin)
                 confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
-                if int(confirm) == 1:
+                if (confirm == '1') or (confirm.lower().startswith('y')):
                     with open(filename, "a") as wr:
                         new = "\n"+user_name+":"+pin+",0.0"
                         wr.write(new)
                         wr.close()
                         print ("Account Created Successfully! \n")
                         return login_user()
-                elif int(confirm) == 2:
+                elif (confirm == '2') or (confirm.lower().startswith('n')):
+                    return new_account()
+                else:
                     return new_account()
 
             else:
@@ -108,5 +114,9 @@ def new_account():
     print ("Account Not Created!")
     return login()
 
-
-login_user()
+try:
+    login_user()
+except:
+    Exception
+    print ("Some errors came encountered!\nPlease be careful next time")
+    login_user()
