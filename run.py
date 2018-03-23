@@ -15,7 +15,7 @@ def login_user():
     global d 								#main funtion which calls further funtions,execution starts from here
     data()										#data funtion is called to check or make changes in it
     user = input("Please Select One \n1. Login \n2. Create New Account \n0. Exit \n")
-    if not user.isdigit():
+    if not str(user).isdigit():
         print ("Invalid Selection!")
         return login_user()
     if int(user) == 1:
@@ -41,7 +41,7 @@ def data():										#when 1 is entered from main(login_user)
         with open(filename, "a+") as ap:
             #file size shorter than 13 bit
             if os.stat(filename).st_size <= 0:
-                ap.write('abc:1234,0.0')
+                ap.write('abc xyz:1234,0.0')
                 ap.close()
                 print ("Please create an account first!")
                 return
@@ -49,7 +49,7 @@ def data():										#when 1 is entered from main(login_user)
                 with open(filename, "r+") as rd:
                     id_user = rd.read().split("\n")				#opened file in data read mode
                     for i in id_user:
-                        a = re.split("[ : , ]",i)
+                        a = re.split("[:,]",i)
                         a[1],a[2] = int(a[1]),float(a[2])
                         d[a[0]] = a[1],a[2]
                     return d
@@ -81,8 +81,10 @@ def login():
 
 
 def new_account():
-    user_name = input("Please Type Your Name : ")
-    if not user_name.isalpha():
+    user_name1 = input("Enter First Name : ")
+    user_name2 = input("Enter Last Name : ")
+
+    if (user_name1.isalpha() == False) or (user_name2.isalpha() == False):
         print ("Invalid Name")
         return new_account()
     pin_count = 0
@@ -91,12 +93,12 @@ def new_account():
         if (len(pin) == 4) and (pin.isdigit() == True):
             confirm_pin = str(input ("Confirm Pin : "))
             if pin == confirm_pin:
-                print ("Account Name :",user_name,"\nPin :",pin)
+                print ("Account Name :",user_name1+' '+user_name2,"\nPin :",pin)
                 confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
                 if (confirm == '1') or (confirm.lower().startswith('y')):
                     with open(filename, "a") as wr:
-                        new = "\n"+user_name+":"+pin+",0.0"
+                        new = "\n"+user_name1+' '+user_name2+":"+pin+",0.0"
                         wr.write(new)
                         wr.close()
                         print ("Account Created Successfully! \n")
@@ -118,5 +120,4 @@ try:
     login_user()
 except:
     Exception
-    print ("Some errors came encountered!\nPlease be careful next time")
-    login_user()
+    print ("Some errors came encountered,\nPlease be careful next time.\nGood bye!")
