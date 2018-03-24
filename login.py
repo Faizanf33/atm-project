@@ -155,11 +155,11 @@ def new_account():
 
 
 
-try:
-    os.system('cls' if os.name == 'nt' else 'clear')
-    login_user()
-except:
-    Exception
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print ("Sorry for inconvenience.")
-    print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
+#try:
+os.system('cls' if os.name == 'nt' else 'clear')
+login_user()
+#except:
+#    Exception
+#    os.system('cls' if os.name == 'nt' else 'clear')
+#    print ("Sorry for inconvenience.")
+#    print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
