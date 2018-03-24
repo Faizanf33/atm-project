@@ -8,7 +8,8 @@ filename = os.path.join(directory, name)	#joining directory with file for furthe
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
     from datetime import datetime
-    print(datetime.now(),"\nATM Service! \n\nWelcome",user_name,"to YOB Service!")
+    print(datetime.now())
+    print("\nDear",user_name+"!\nWelcome to YOB Service\n")
     #User input for selection
     global net_balance
     net_balance += Net_balance
