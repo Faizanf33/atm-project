@@ -59,7 +59,7 @@ def data():										#when 1 is entered from main(login_user)
                         d[a[0]] = a[1],a[2]
                     return d
     except:
-        FileNotFoundError
+        IOError or FileNotFoundError
         os.mkdir("Data")
         data()
 
