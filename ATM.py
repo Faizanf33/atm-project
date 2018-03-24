@@ -8,28 +8,39 @@ filename = os.path.join(directory, name)	#joining directory with file for furthe
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
     from datetime import datetime
-    print(datetime.now(),"\nATM Service! \n\nWelcome",user_name)
+    print(datetime.now(),"\nATM Service! \n\nWelcome",user_name,"to YOB Service!")
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input("Please Type Any Option Provided Below And Press Enter. \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")    #Starts the loop
-    while int(Opr) != 0:
+    Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")    #Starts the loop
+    os.system('cls' if os.name == 'nt' else 'clear')
+    if not Opr.isdigit():
+        return atm(user_name,Net_balance,Pin)
+    while float(Opr) != 0.0:
 
-        if int(Opr) == 1:   #Prints amount in counter
-            print ("\nYour Acount Balance = Rs",net_balance,"\n")
+        if float(Opr) == 1.0:   #Prints amount in counter
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Your Acount Balance = Rs",net_balance,"\n")
 
-        elif int(Opr) == 2:
+        elif float(Opr) == 2.0:
+            os.system('cls' if os.name == 'nt' else 'clear')
             deposit(net_balance)       #Deposit function is called
 
-        elif int(Opr) == 3:
+        elif float(Opr) == 3.0:
+            os.system('cls' if os.name == 'nt' else 'clear')
             withdraw(net_balance)      #Withdraw function is called
 
         else:
+            os.system('cls' if os.name == 'nt' else 'clear')
             print ("Wrong Option!")
 
         #Incase above condition(s) get meet
         #Loop continues untill input equals '0'
         Opr = input("1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
+        if not Opr.isdigit():
+            return atm(user_name,Net_balance,Pin)
+
+    os.system('cls' if os.name == 'nt' else 'clear')
     print ("Thanks For Using ATM! \nWe Hope You Are Satisfied With Our Service.\nHave A Nice Day Ahead.")
 
     with open(filename,'a+') as ap:
@@ -47,8 +58,10 @@ def deposit(Net_balance):
     if float(deposit) >= 0: #Check for negetive values
         net_balance += float(deposit)  #Deposit amount is incremented in counter
         return
+
     else:
-        print ("\nPlease Enter Right Amount! \n") #If user inputs negetive amount
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print ("Please Enter Right Amount! \n") #If user inputs negetive amount
         return deposit(net_balance)
 
 #deposit funtion starts when called by atm function
@@ -56,20 +69,26 @@ def withdraw(Net_balance):
     global net_balance
     #If amount is zero returns to atm function
     if float(net_balance) <= 0.0:
-        print ("\nWithdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
+        print ("Withdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
         return
     #If amount is not zero
     else:
         with_draw = float(input("Enter Amount In Rupees: "))
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         #Checks if amount in withdraw is less than amount in counter
         if with_draw <= net_balance:
+
             if float(with_draw) > 0.0:
                 net_balance -= float(with_draw)
                 return
+
             else:
-                print ("\nPlease Enter Right Amount! \n")
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print ("Please Enter Right Amount! \n")
                 return withdraw(net_balance)
 
         else:
-            print ("\nWithdrawl Impossible! \nYour Acount Balance = Rs",net_balance,"\n")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Withdrawl Impossible! \nYour Acount Balance = Rs",net_balance,"\n")
         return withdraw(net_balance)
