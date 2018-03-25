@@ -5,6 +5,13 @@ directory = "Data"	#Path for file
 name = "usersdata.txt"						#name of file
 filename = os.path.join(directory, name)	#joining directory with file for further use
 
+# Using input() in python 2 or 3
+try:
+    # set raw_input as input in python2
+    input = raw_input
+except:
+    pass
+
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
     from datetime import datetime
@@ -55,9 +62,11 @@ def deposit(Net_balance):
     global net_balance
     #User input for deposit amount
     deposit = float(input("Enter Amount In Rupees: ")) #Input is converted to float
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     if float(deposit) >= 0: #Check for negetive values
         net_balance += float(deposit)  #Deposit amount is incremented in counter
+        print("You Have Successfully Depositted An Amount Of Rs",deposit,'\n')
         return
 
     else:
@@ -80,8 +89,9 @@ def withdraw(Net_balance):
         #Checks if amount in withdraw is less than amount in counter
         if with_draw <= net_balance:
 
-            if float(with_draw) > 0.0:
+            if float(with_draw) >= 0.0:
                 net_balance -= float(with_draw)
+                print("You Have Successfully Withdrawn An Amount Of Rs",with_draw,'\n')
                 return
 
             else:

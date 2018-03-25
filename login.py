@@ -12,6 +12,13 @@ directory = "Data"
 name = "usersdata.txt"
 filename = os.path.join(directory, name)
 
+# Using input() in python 2 or 3
+try:
+    # set raw_input as input in python2
+    input = raw_input
+except:
+    pass
+
 def login_user():
     global d 								#main funtion which calls further funtions,execution starts from here
     data()                                  #data funtion is called to check or make changes in it
@@ -155,11 +162,11 @@ def new_account():
 
 
 
-#try:
-os.system('cls' if os.name == 'nt' else 'clear')
-login_user()
-#except:
-#    Exception
-#    os.system('cls' if os.name == 'nt' else 'clear')
-#    print ("Sorry for inconvenience.")
-#    print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
+try:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    login_user()
+except:
+    Exception
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print ("Sorry for inconvenience.")
+    print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
