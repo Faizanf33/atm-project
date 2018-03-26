@@ -1,10 +1,9 @@
 import os
+from encrypt import rot13
+from Data import join
 
 net_balance = 0.0  #Counter for user amount
 
-directory = "Data"	#Path for file
-name = "usersdata.txt"						#name of file
-filename = os.path.join(directory, name)	#joining directory with file for further use
 
 # Using input() in python 2 or 3
 try:
@@ -13,8 +12,10 @@ try:
 except:
     pass
 
+
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
+    filename = join()
     from datetime import datetime
     print(datetime.now())
     print("\nDear",user_name+"!\nWelcome to YOB Service\n")
@@ -106,10 +107,3 @@ def withdraw(Net_balance):
             os.system('cls' if os.name == 'nt' else 'clear')
             print ("Withdrawl Impossible! \nYour Acount Balance = Rs",net_balance,"\n")
         return withdraw(net_balance)
-
-#for incoding of name
-def rot13(s):
-    chars = "abcdefghijklmnopqrstuvwxyz"
-    trans = chars[13:]+chars[:13]
-    rot_char = lambda c: trans[chars.find(c)] if chars.find(c)>-1 else c
-    return ''.join( rot_char(c) for c in s )
