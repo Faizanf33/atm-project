@@ -1,4 +1,6 @@
 import os
+import base64
+
 net_balance = 0.0  #Counter for user amount
 
 directory = "Data"	#Path for file
