@@ -1,16 +1,10 @@
-from ATM import atm,rot13  							#Imports atm function from ATM.py file
+from ATM import atm
+from encrypt import rot13  							#Imports atm function from ATM.py file
+from Data import data,join
 import os
 import sys
 import re
 
-user_name = ""   								#global declaration of user_name,filename,d(dictionary)
-filename = ""
-d = {}
-
-#relative path for file
-directory = "Data"
-name = "usersdata.txt"
-filename = os.path.join(directory, name)
 
 # Using input() in python 2 or 3
 try:
@@ -19,9 +13,9 @@ try:
 except:
     pass
 
-def login_user():
-    global d 								#main funtion which calls further funtions,execution starts from here
-    data()                                  #data funtion is called to check or make changes in it
+
+def login_user():								#main funtion which calls further funtions,execution starts from here
+    d = data()                                  #data funtion is called to check or make changes in it
     user = input("Select One : \n1. Login \n2. Create New Account \n0. Exit \n")
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -29,7 +23,7 @@ def login_user():
         print ("Invalid Selection!")
         return login_user()
     if int(user) == 1:
-        login()									#login function called for further execution
+        login(d)									#login function called for further execution
 
     elif int(user) == 2:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -44,40 +38,15 @@ def login_user():
 												#recursion(main function called again)
     return
 
-def data():										#when 1 is entered from main(login_user)
-    global filename,name
-    global d
 
-    try:
-        with open(filename, "a+") as ap:
-            #file size shorter than 13 bit
-            if os.stat(filename).st_size <= 0:
-                ap.write('nop klm:1234,0.0')
-                ap.close()
-                print ("Please create an account first!")
-                return login_user()
-
-            else:
-                with open(filename, "r+") as rd:
-                    id_user = rd.read().split("\n")				#opened file in data read mode
-                    for items in id_user:
-                        indiv_user_info = re.split("[:,]",items)
-                        #rot13() function is called for decoding
-                        indiv_user_info[0] = rot13(indiv_user_info[0])
-                        indiv_user_info[1],indiv_user_info[2] = str(indiv_user_info[1]),float(indiv_user_info[2])
-                        d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2]
-                    return d
-    except:
-        IOError or FileNotFoundError
-        os.mkdir("Data")
-        data()
-
-def login():
-    global user_name
+def login(d):
     os.system('cls' if os.name == 'nt' else 'clear')
     user_name = input("Login\nName : ")
     entry = 0
-
+    if (d == None):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print ("Please create an account first!")
+        return login_user()
     if user_name in d.keys():
         while int(entry) != 3:
             print("Entries left :",(3-entry))
@@ -104,6 +73,7 @@ def login():
 
 
 def new_account():
+    filename = join()
     user_name1 = input("New Account\nEnter First Name : ")
     os.system('cls' if os.name == 'nt' else 'clear')
     user_name2 = input("Enter Last Name : ")
