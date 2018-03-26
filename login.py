@@ -1,4 +1,4 @@
-from ATM import atm  							#Imports atm function from ATM.py file
+from ATM import atm,rot13  							#Imports atm function from ATM.py file
 import os
 import sys
 import re
@@ -52,7 +52,7 @@ def data():										#when 1 is entered from main(login_user)
         with open(filename, "a+") as ap:
             #file size shorter than 13 bit
             if os.stat(filename).st_size <= 0:
-                ap.write('abc xyz:1234,0.0')
+                ap.write('nop klm:1234,0.0')
                 ap.close()
                 print ("Please create an account first!")
                 return login_user()
@@ -60,16 +60,17 @@ def data():										#when 1 is entered from main(login_user)
             else:
                 with open(filename, "r+") as rd:
                     id_user = rd.read().split("\n")				#opened file in data read mode
-                    for i in id_user:
-                        a = re.split("[:,]",i)
-                        a[1],a[2] = str(a[1]),float(a[2])
-                        d[a[0]] = a[1],a[2]
+                    for items in id_user:
+                        indiv_user_info = re.split("[:,]",items)
+                        #rot13() function is called for decoding
+                        indiv_user_info[0] = rot13(indiv_user_info[0])
+                        indiv_user_info[1],indiv_user_info[2] = str(indiv_user_info[1]),float(indiv_user_info[2])
+                        d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2]
                     return d
     except:
         IOError or FileNotFoundError
         os.mkdir("Data")
         data()
-
 
 def login():
     global user_name
@@ -112,6 +113,7 @@ def new_account():
         print ("Invalid Name")
         return new_account()
 
+
     os.system('cls' if os.name == 'nt' else 'clear')
     pin_count = 0
     while pin_count != 3:
@@ -131,7 +133,10 @@ def new_account():
                 if (confirm == '1') or (confirm.lower().startswith('y')):
                     os.system('cls' if os.name == 'nt' else 'clear')
                     with open(filename, "a") as wr:
-                        new = "\n"+user_name1+' '+user_name2+":"+pin+",0.0"
+                        enc_name = user_name1+' '+user_name2
+                        #rot13() function is called for encoding
+                        enc = rot13(enc_name)
+                        new = "\n"+enc+":"+pin+",0.0"
                         wr.write(new)
                         wr.close()
                         print ("Account Created Successfully! \n")
