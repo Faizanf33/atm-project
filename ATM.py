@@ -54,7 +54,9 @@ def atm(user_name,Net_balance,Pin):
     print ("Thanks For Using ATM! \nWe Hope You Are Satisfied With Our Service.\nHave A Nice Day Ahead.")
 
     with open(filename,'a+') as ap:
-        re_new = "\n"+user_name+":"+str(Pin)+","+str(net_balance)
+        #rot13() function is called for encoding
+        enc = rot13(user_name)
+        re_new = "\n"+enc+":"+str(Pin)+","+str(net_balance)
         ap.write(re_new)
         ap.close()
     return
@@ -105,3 +107,10 @@ def withdraw(Net_balance):
             os.system('cls' if os.name == 'nt' else 'clear')
             print ("Withdrawl Impossible! \nYour Acount Balance = Rs",net_balance,"\n")
         return withdraw(net_balance)
+
+#for incoding of name
+def rot13(s):
+    chars = "abcdefghijklmnopqrstuvwxyz"
+    trans = chars[13:]+chars[:13]
+    rot_char = lambda c: trans[chars.find(c)] if chars.find(c)>-1 else c
+    return ''.join( rot_char(c) for c in s )
