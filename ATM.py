@@ -48,6 +48,7 @@ def atm(user_name,Net_balance,Pin):
         #Loop continues untill input equals '0'
         Opr = input("1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
         if not Opr.isdigit():
+            os.system('cls' if os.name == 'nt' else 'clear')
             return atm(user_name,Net_balance,Pin)
 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -65,43 +66,48 @@ def atm(user_name,Net_balance,Pin):
 def deposit(Net_balance):
     global net_balance
     #User input for deposit amount
-    deposit = float(input("Enter Amount In Rupees: ")) #Input is converted to float
+    deposit_amount = input("Enter Amount In Rupees: ")
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    if float(deposit) >= 0: #Check for negetive values
-        net_balance += float(deposit)  #Deposit amount is incremented in counter
-        print("You Have Successfully Depositted An Amount Of Rs",deposit,'\n')
+    if float(deposit_amount) >= 0: #Check for negetive values
+        net_balance += float(deposit_amount)  #Deposit amount is incremented in counter
+        print("You Have Successfully Depositted An Amount Of Rs",deposit_amount,'\n')
         return
+
+    elif float(deposit_amount) < 0:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print ("Please Enter Right Amount! \n") #If user inputs negetive amount
+        return deposit(net_balance)
 
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print ("Please Enter Right Amount! \n") #If user inputs negetive amount
+        print ("Please Enter Right Amount! \n")
         return deposit(net_balance)
 
 #deposit funtion starts when called by atm function
 def withdraw(Net_balance):
     global net_balance
     #If amount is zero returns to atm function
+
     if float(net_balance) <= 0.0:
         print ("Withdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
         return
     #If amount is not zero
     else:
-        with_draw = float(input("Enter Amount In Rupees: "))
+        with_draw = input("Enter Amount In Rupees: ")
         os.system('cls' if os.name == 'nt' else 'clear')
 
+        #If user inputs negetive amount
+        if float(with_draw) < 0:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Please Enter Right Amount! \n")
+            return withdraw(net_balance)
+
         #Checks if amount in withdraw is less than amount in counter
-        if with_draw <= net_balance:
-
-            if float(with_draw) >= 0.0:
-                net_balance -= float(with_draw)
-                print("You Have Successfully Withdrawn An Amount Of Rs",with_draw,'\n')
-                return
-
-            else:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print ("Please Enter Right Amount! \n")
-                return withdraw(net_balance)
+        elif float(with_draw) <= net_balance:
+            net_balance -= float(with_draw)
+            print("You Have Successfully Withdrawn An Amount Of Rs",with_draw,'\n')
+            return
 
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
