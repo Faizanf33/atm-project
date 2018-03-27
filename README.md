@@ -1,8 +1,9 @@
 # ATM
-(Beta mode)
-1. Move to 'ATM' directory and open terminal
+*(Beta mode)*
+## To Run the code:
+1. open termianl and cd into 'atm-project' directory.
 
-2. Run using: python3 login.py or python login.py
+2. Run the program using: python3 login.py or python login.py
 
 3. Login (default login: 'abc xyz', pin:'1234')
       Or
@@ -10,4 +11,4 @@
 
 
 
-*Please issue errors encountered during process
+**Please issue errors encountered during process**
