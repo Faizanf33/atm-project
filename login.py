@@ -13,21 +13,32 @@ try:
 except:
     pass
 
+#main funtion which calls further funtions,execution starts from here
+def login_user():
 
-def login_user():								#main funtion which calls further funtions,execution starts from here
-    d = data()                                  #data funtion is called to check or make changes in it
-    user = input("Select One : \n1. Login \n2. Create New Account \n0. Exit \n")
+    #data funtion is called to check or make changes in it
+    d = data()
+
+    user = input("Select One : \n1. Login \n2. Create New Account \n3. Delete Existing Account \n0. Exit \n")
     os.system('cls' if os.name == 'nt' else 'clear')
 
     if not str(user).isdigit():
         print ("Invalid Selection!")
         return login_user()
-    if int(user) == 1:
-        login(d)									#login function called for further execution
 
+    #login function called for further execution
+    if int(user) == 1:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        login(d)
+
+    #new_account function called for further execution
     elif int(user) == 2:
         os.system('cls' if os.name == 'nt' else 'clear')
-        new_account()							#new_account function called for further execution
+        new_account()
+
+    elif int(user) == 3:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        del_account()
 
     elif int(user) == 0:                        #exits the main funtion
         print ("Good Bye!")
@@ -41,7 +52,7 @@ def login_user():								#main funtion which calls further funtions,execution st
 
 def login(d):
     os.system('cls' if os.name == 'nt' else 'clear')
-    user_name = input("Login\nName : ")
+    user_name = input("Login\nEnter Full Name : ")
     entry = 0
     if (d == None):
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -61,14 +72,14 @@ def login(d):
             else:
                 entry += 1
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print ("Incorrect Pin")
+                print ("Incorrect Pin!")
         os.system('cls' if os.name == 'nt' else 'clear')
         print ("Login Unsuccessful\n")
         return login_user()
 
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print ("Invalid User")
+        print ("Invalid User!")
         return login_user()
 
 
@@ -135,13 +146,67 @@ def new_account():
     print ("Account Not Created!")
     return login_user()
 
+def del_account():
+    d = data()
+    filename = join()
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    acc_name = input("Delete Account\nEnter Full Name : ")
+
+    if acc_name in d.keys():
+        os.system('cls' if os.name == 'nt' else 'clear')
+        acc_pin = str(input("Enter 4-Digit Pin : "))
+
+        if acc_pin == d[acc_name][0]:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Delete Account :",acc_name)
+            confirm = input("Please Confirm \n1. Yes \n2. No \n")
+
+            if (confirm == '1') or (confirm.lower().startswith('y')):
+                os.system('cls' if os.name == 'nt' else 'clear')
+                if d[acc_name] == d['abc xyz']:
+                    del d[acc_name]
+                else:
+                    del d[acc_name],d['abc xyz']
+                #over_writing of existing file
+                with open(filename,"w") as rd:
+                    rd.write('nop klm:1234,0.0')
+                    rd.close()
+                with open(filename,"a") as ow:
+                    for item in d.keys():
+                        items = rot13(item)
+                        over_write = '\n'+items+':'+d[item][0]+','+str(d[item][1])
+                        ow.write(over_write)
+                    ow.close()
+                    print ("Account Deleted Successfully! \n")
+                    return login_user()
+
+            elif (confirm == '2') or (confirm.lower().startswith('n')):
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print ("Account Not Deleted!")
+                return login_user()
+
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print ("Account Not Deleted!")
+                return login_user()
+
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Incorrect Pin!")
+            return login_user()
+
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print ("Account Does Not Exist!")
+        return login_user()
 
 
-try:
-    os.system('cls' if os.name == 'nt' else 'clear')
-    login_user()
-except:
-    Exception
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print ("Sorry for inconvenience.")
-    print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
+#try:
+os.system('cls' if os.name == 'nt' else 'clear')
+login_user()
+# except:
+#     Exception
+#     os.system('cls' if os.name == 'nt' else 'clear')
+#     print ("Sorry for inconvenience.")
+#     print ("Some errors were encountered,\nPlease be careful next time.\nGood bye!")
