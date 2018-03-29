@@ -58,7 +58,50 @@ def login(d):
         os.system('cls' if os.name == 'nt' else 'clear')
         print ("Please create an account first!")
         return login_user()
-    if user_name in d.keys():
+
+    #admin block
+    elif (user_name in d.keys()) and (user_name.lower() == 'admin access'):
+        pin = str(input("Enter 4-Digit Pin : "))
+
+        if pin == d[user_name][0]:
+            del d[user_name],d['abc xyz']
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Admin")
+            ad = input("1.Active Users \n2.Active User Names\n3.Users Info. \n0.Exit\n")
+            while ad != '0':
+
+                if ad == '1':
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    c_user = 0
+                    for users in d:
+                        c_user += 1
+                    print ("Active:")
+                    print ("Active Users :",c_user)
+
+                elif ad == '2':
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    c_user = 0
+                    print ("Active User Names:")
+                    for users in d:
+                        c_user += 1
+                        print ("Active User",c_user,':',users)
+
+                elif ad == '3':
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print ("Users Info:")
+                    for info in d.keys():
+                        print ("Name =",info,", Pin :",d[info][0],", Amount :",d[info][1])
+
+                    #os.system('cls' if os.name == 'nt' else 'clear')
+                ad = input("1.Active Users \n2.Active User Names\n3.Users Info. \n0.Exit\n")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return login_user()
+
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return login_user()
+    #users block
+    elif user_name in d.keys():
         while int(entry) != 3:
             print("Entries left :",(3-entry))
             pin = str(input("Enter 4-Digit Pin : "))
