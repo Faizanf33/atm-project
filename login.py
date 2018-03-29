@@ -58,6 +58,31 @@ def login(d):
         os.system('cls' if os.name == 'nt' else 'clear')
         print ("Please create an account first!")
         return login_user()
+
+    #admin block
+    elif (user_name in d.keys()) and (user_name.lower() == 'admin access'):
+        pin = str(input("Enter 4-Digit Pin : "))
+
+        if pin == d[user_name][0]:
+            del d[user_name]
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Admin")
+            ad = input("1.Active Users \n2.Users Info. \n0.Exit\n")
+            while ad != '0':
+                if ad == '1':
+                    print (d.keys())
+                if ad == '2':
+                    for info in d.keys():
+                        print ("Name =",info,", Pin :",d[info][0],", Amount :",d[info][1])
+
+                    #os.system('cls' if os.name == 'nt' else 'clear')
+                ad = input("1.Active Users \n2.Users Info. \n0.Exit\n")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return login_user()
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return login_user()
+    #users block
     if user_name in d.keys():
         while int(entry) != 3:
             print("Entries left :",(3-entry))
