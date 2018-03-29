@@ -1,3 +1,4 @@
+from __future__ import print_function
 from ATM import atm
 from encrypt import rot13  							#Imports atm function from ATM.py file
 from Data import data,join
@@ -15,7 +16,6 @@ except:
 
 #main funtion which calls further funtions,execution starts from here
 def login_user():
-
     #data funtion is called to check or make changes in it
     d = data()
 
