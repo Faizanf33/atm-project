@@ -154,7 +154,6 @@ def del_account():
     acc_name = input("Delete Account\nEnter Full Name : ")
 
     if acc_name in d.keys():
-        os.system('cls' if os.name == 'nt' else 'clear')
         acc_pin = str(input("Enter 4-Digit Pin : "))
 
         if acc_pin == d[acc_name][0]:
