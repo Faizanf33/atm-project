@@ -17,8 +17,8 @@ except:
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
     filename = join()
-    import time
-    print (time.strftime("Date:%m-%h-%Y \nTime:%I:%M %p  Day:%A\n"))
+    import time,datetime
+    print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
     print(("Dear"),user_name+("!"))
     print (("Welcome to YOB Service"),('\n'))
     #User input for selection
