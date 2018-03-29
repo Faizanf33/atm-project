@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from encrypt import rot13
 from Data import join
@@ -16,9 +17,10 @@ except:
 #Atm function called after successfull login
 def atm(user_name,Net_balance,Pin):
     filename = join()
-    from datetime import datetime
-    print(datetime.now())
-    print("\nDear",user_name+"!\nWelcome to YOB Service\n")
+    import time
+    print (time.strftime("Date:%m-%h-%Y \nTime:%I:%M %p  Day:%A\n"))
+    print(("Dear"),user_name+("!"))
+    print (("Welcome to YOB Service"),('\n'))
     #User input for selection
     global net_balance
     net_balance += Net_balance
