@@ -14,6 +14,7 @@
 To get the Admin account, first create new account with the name "admin access"
 (The name must exactly like that) and then enter a password of your own choice, to enjoy admin controls.
 Admin Controls:
+
 You can
 - Check the active users.
 
