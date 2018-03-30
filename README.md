@@ -11,15 +11,17 @@
 
 ## Admin Control
 
-To get the Admin account, first create new account with the name "Admin access" 
-(The name must exactly like that) and then enter a password of your own choice, to enjoy the admin controls.
+To get the Admin account, first create new account with the name "admin access"
+(The name must exactly like that) and then enter a password of your own choice, to enjoy admin controls.
 Admin Controls:
 You can
 - Check the active users.
 
 - Check the active accounts.
 
-- Check the acount informations.
+- Check the account informations.
+
+- Delete account.
 
 
 **Please issue errors encountered during process**
