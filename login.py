@@ -51,6 +51,7 @@ def login_user():
 
 
 def login(d):
+    import time,datetime
     os.system('cls' if os.name == 'nt' else 'clear')
     user_name = input("Login\nEnter Full Name : ")
     entry = 0
@@ -66,8 +67,9 @@ def login(d):
         if pin == d[user_name][0]:
             del d[user_name],d['abc xyz']
             os.system('cls' if os.name == 'nt' else 'clear')
-            print ("Admin")
-            ad = input("1.Active Users \n2.Active User Names\n3.Users Info. \n0.Exit\n")
+            print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
+            print ("Welcome to YOB Admin Block!\n\nSelect Option Provided Below")
+            ad = input("1.Active Users \n2.Active User Names\n3.Users Info.\n4.Remove User\n0.Exit\n")
             while ad != '0':
 
                 if ad == '1':
@@ -92,8 +94,10 @@ def login(d):
                     for info in d.keys():
                         print ("Name =",info,", Pin :",d[info][0],", Amount :",d[info][1])
 
-                    #os.system('cls' if os.name == 'nt' else 'clear')
-                ad = input("1.Active Users \n2.Active User Names\n3.Users Info. \n0.Exit\n")
+                elif ad == '4':
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    return del_account()
+                ad = input("1.Active Users \n2.Active User Names\n3.Users Info.\n4.Remove User\n0.Exit\n")
             os.system('cls' if os.name == 'nt' else 'clear')
             return login_user()
 
