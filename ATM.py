@@ -50,8 +50,8 @@ def atm(user_name,Net_balance,Pin):
         #Loop continues untill input equals '0'
         Opr = input("1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
         if not Opr.isdigit():
+            Opr = 4
             os.system('cls' if os.name == 'nt' else 'clear')
-            return atm(user_name,Net_balance,Pin)
 
     os.system('cls' if os.name == 'nt' else 'clear')
     print ("Thanks For Using ATM! \nWe Hope You Are Satisfied With Our Service.\nHave A Nice Day Ahead.")
