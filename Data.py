@@ -1,11 +1,11 @@
 from encrypt import rot13
 import os
-import re
+import csv
 
 #relative path for file
 def join():
     directory = "Data"
-    name = "usersdata.txt"
+    name = "usersdata.csv"
     filename = os.path.join(directory, name)
     return filename
 
@@ -13,26 +13,30 @@ def join():
 def data():
     filename = join()
     d = {}
+    new = ['Name','PIN','Amount','History']
 
     try:
+        #file size shorter than 13 bit
         with open(filename, "a") as ap:
-            #file size shorter than 13 bit
-            if os.stat(filename).st_size <= 0:
-                ap.write('nop klm:1234,0.0')
+            if (os.path.getsize(filename)) <= 0:
+                wr = csv.writer(ap)
+                wr.writerow(new)
                 ap.close()
                 print ("Please create an account first!")
                 return
 
             else:
                 with open(filename, "r") as rd:
-                    id_user = rd.read().split("\n")				#opened file in data read mode
-                    for items in id_user:
-                        indiv_user_info = re.split("[:,]",items)
-                        #rot13() function is called for decoding
-                        indiv_user_info[0] = rot13(indiv_user_info[0])
-                        indiv_user_info[1],indiv_user_info[2] = str(indiv_user_info[1]),float(indiv_user_info[2])
-                        d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2]
-                    return d
+                        r = csv.reader(rd)
+                        for indiv_user_info in r:
+                            if indiv_user_info == ['Name','PIN','Amount','History']:
+                                continue
+                            else:
+                                #rot13() function is called for decoding
+                                indiv_user_info[0] = rot13(indiv_user_info[0])
+                                indiv_user_info[2] = float(indiv_user_info[2])
+                                d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3]
+                        return d
 
     except:
         IOError or FileNotFoundError
