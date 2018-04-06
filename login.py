@@ -1,10 +1,10 @@
 from __future__ import print_function
 from ATM import atm
-from encrypt import rot13  							#Imports atm function from ATM.py file
+from encrypt import rot13
 from Data import data,join
 import os
 import sys
-import re
+import csv
 
 
 # Using input() in python 2 or 3
@@ -40,13 +40,16 @@ def login_user():
         os.system('cls' if os.name == 'nt' else 'clear')
         del_account()
 
-    elif int(user) == 0:                        #exits the main funtion
+    #exit the main funtion
+    elif int(user) == 0:
         print ("Good Bye!")
 
+    #in case any other number is entered except those listed above
+    #recursion(main function called again)
     else:
         print ("Invalid Selection!")
-        return login_user()						#in case any other number is entered except those listed above
-												#recursion(main function called again)
+        return login_user()
+
     return
 
 
@@ -65,7 +68,7 @@ def login(d):
         pin = str(input("Enter 4-Digit Pin : "))
 
         if pin == d[user_name][0]:
-            del d[user_name],d['abc xyz']
+            del d[user_name]
             os.system('cls' if os.name == 'nt' else 'clear')
             print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
             print ("Welcome to YOB Admin Block!\n\nSelect Option Provided Below")
@@ -111,10 +114,11 @@ def login(d):
             pin = str(input("Enter 4-Digit Pin : "))
 
             if pin == d[user_name][0]:
-                Net_balance = d[user_name][1]
                 Pin = d[user_name][0]
+                Net_balance = d[user_name][1]
+                History = d[user_name][2]
                 os.system('cls' if os.name == 'nt' else 'clear')
-                return atm(user_name,Net_balance,Pin)
+                return atm(user_name,Net_balance,Pin,History)
 
             else:
                 entry += 1
@@ -131,6 +135,8 @@ def login(d):
 
 
 def new_account():
+    import time,datetime
+
     filename = join()
     user_name1 = input("New Account\nEnter First Name : ")
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -160,12 +166,14 @@ def new_account():
 
                 if (confirm == '1') or (confirm.lower().startswith('y')):
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    with open(filename, "a") as wr:
+                    with open(filename, "a+") as wr:
                         enc_name = user_name1+' '+user_name2
                         #rot13() function is called for encoding
                         enc = rot13(enc_name)
-                        new = "\n"+enc+":"+pin+",0.0"
-                        wr.write(new)
+                        new = [enc,pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
+
+                        w = csv.writer(wr)
+                        w.writerow(new)
                         wr.close()
                         print ("Account Created Successfully! \n")
                         return login_user()
@@ -210,19 +218,20 @@ def del_account():
 
             if (confirm == '1') or (confirm.lower().startswith('y')):
                 os.system('cls' if os.name == 'nt' else 'clear')
-                if d[acc_name] == d['abc xyz']:
-                    del d[acc_name]
-                else:
-                    del d[acc_name],d['abc xyz']
+                del d[acc_name]
+
                 #over_writing of existing file
                 with open(filename,"w") as rd:
-                    rd.write('nop klm:1234,0.0')
+                    r = csv.writer(rd)
+                    r.writerow(['Name','PIN','Amount','History'])
                     rd.close()
+
                 with open(filename,"a") as ow:
                     for item in d.keys():
                         items = rot13(item)
-                        over_write = '\n'+items+':'+d[item][0]+','+str(d[item][1])
-                        ow.write(over_write)
+                        over_write = [items,d[item][0],str(d[item][1]),str(d[item][2])]
+                        o = csv.writer(ow)
+                        o.writerow(over_write)
                     ow.close()
                     print ("Account Deleted Successfully! \n")
                     return login_user()
@@ -239,7 +248,7 @@ def del_account():
 
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print ("Incorrect Pin!")
+            print ("Pin Did Not Match!")
             return login_user()
 
     else:
