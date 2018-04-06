@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 from encrypt import rot13
 from Data import join
+import csv
 
 net_balance = 0.0  #Counter for user amount
 
@@ -15,7 +16,7 @@ except:
 
 
 #Atm function called after successfull login
-def atm(user_name,Net_balance,Pin):
+def atm(user_name,Net_balance,Pin,History):
     filename = join()
     import time,datetime
     print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
@@ -24,33 +25,40 @@ def atm(user_name,Net_balance,Pin):
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")    #Starts the loop
+    Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. History \n0. Exit \n")
     os.system('cls' if os.name == 'nt' else 'clear')
     if not Opr.isdigit():
-        return atm(user_name,Net_balance,Pin)
-    while float(Opr) != 0.0:
+        return atm(user_name,Net_balance,Pin,History)
+    while int(Opr) != 0:
 
-        if float(Opr) == 1.0:   #Prints amount in counter
+        #Prints amount in counter
+        if int(Opr) == 1:
             os.system('cls' if os.name == 'nt' else 'clear')
             print ("Your Acount Balance = Rs",net_balance,"\n")
 
-        elif float(Opr) == 2.0:
+        #Deposit function is called
+        elif int(Opr) == 2:
             os.system('cls' if os.name == 'nt' else 'clear')
-            deposit(net_balance)       #Deposit function is called
+            deposit(net_balance)
 
-        elif float(Opr) == 3.0:
+        #Withdraw function is called
+        elif int(Opr) == 3:
             os.system('cls' if os.name == 'nt' else 'clear')
-            withdraw(net_balance)      #Withdraw function is called
+            withdraw(net_balance)
+
+        elif int(Opr) == 4:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ("Your Acount Was Previously Logged in on",History,"\n")
 
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             print ("Wrong Option!")
 
         #Incase above condition(s) get meet
-        #Loop continues untill input equals '0'
-        Opr = input("1. Check Account Balance \n2. Deposit \n3. Withdraw \n0. Exit \n")
+        #Loop continues untill '0' is entered
+        Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. History \n0. Exit \n")
         if not Opr.isdigit():
-            Opr = 4
+            Opr = 5
             os.system('cls' if os.name == 'nt' else 'clear')
 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -59,8 +67,9 @@ def atm(user_name,Net_balance,Pin):
     with open(filename,'a+') as ap:
         #rot13() function is called for encoding
         enc = rot13(user_name)
-        re_new = "\n"+enc+":"+str(Pin)+","+str(net_balance)
-        ap.write(re_new)
+        re_new = [enc,str(Pin),str(net_balance),time.strftime('%d-%b-%Y at %I:%M %p')]
+        w = csv.writer(ap)
+        w.writerow(re_new)
         ap.close()
     return
 
@@ -69,15 +78,17 @@ def deposit(Net_balance):
     global net_balance
     try:
         deposit_amount = input("Enter Amount In Rupees: ")
-
-        if float(deposit_amount) >= 0: #Check for negetive values
-            net_balance += float(deposit_amount)  #Deposit amount is incremented in counter
+        #Check for negetive values
+        if float(deposit_amount) >= 0:
+            #Deposit amount is incremented in counter
+            net_balance += float(deposit_amount)
             print("You Have Successfully Depositted An Amount Of Rs",deposit_amount,'\n')
             return
 
         elif float(deposit_amount) < 0:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print ("Please Enter Right Amount! \n") #If user inputs negetive amount
+            #If user inputs negetive amount
+            print ("Please Enter Right Amount! \n")
             return deposit(net_balance)
 
         else:
@@ -92,11 +103,10 @@ def deposit(Net_balance):
 def withdraw(Net_balance):
     global net_balance
     #If amount is zero returns to atm function
-
     if float(net_balance) <= 0.0:
         print ("Withdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
         return
-    #If amount is not zero
+
     else:
         try:
             with_draw = input("Enter Amount In Rupees: ")
