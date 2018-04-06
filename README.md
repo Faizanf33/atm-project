@@ -5,7 +5,7 @@
 
 2. Run the program using: python3 login.py or python login.py
 
-3. Login (default login: 'abc xyz', pin:'1234')
+3. Login using existing account
       Or
 4. Create new user and repeat step 3
 
