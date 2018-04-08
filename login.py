@@ -95,7 +95,7 @@ def login(d):
                     os.system('cls' if os.name == 'nt' else 'clear')
                     print ("Users Info:")
                     for info in d.keys():
-                        print ("Name =",info,", Pin :",d[info][0],", Amount :",d[info][1])
+                        print ("Name =",info,", Pin :",d[info][0],", Amount :","{:,}".format(d[info][1]))
 
                 elif ad == '4':
                     os.system('cls' if os.name == 'nt' else 'clear')
