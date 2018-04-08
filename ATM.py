@@ -34,7 +34,7 @@ def atm(user_name,Net_balance,Pin,History):
         #Prints amount in counter
         if int(Opr) == 1:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print ("Your Acount Balance = Rs",net_balance,"\n")
+            print ("Your Acount Balance = Rs","{:,}".format(net_balance),"\n")
 
         #Deposit function is called
         elif int(Opr) == 2:
@@ -78,11 +78,18 @@ def deposit(Net_balance):
     global net_balance
     try:
         deposit_amount = input("Enter Amount In Rupees: ")
+
         #Check for negetive values
         if float(deposit_amount) >= 0:
             #Deposit amount is incremented in counter
             net_balance += float(deposit_amount)
             print("You Have Successfully Depositted An Amount Of Rs",deposit_amount,'\n')
+            return
+
+        #check for extra large amount
+        elif (len(deposit_amount) > 15) or ((len(str(float(deposit_amount)+net_balance))) > 15):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print ('Amount Limit Exceeded!')
             return
 
         elif float(deposit_amount) < 0:
@@ -95,6 +102,7 @@ def deposit(Net_balance):
             os.system('cls' if os.name == 'nt' else 'clear')
             print ("Please Enter Right Amount! \n")
             return deposit(net_balance)
+
     except ValueError:
         os.system('cls' if os.name == 'nt' else 'clear')
         print ("Please Enter Right Amount! \n")
@@ -102,6 +110,7 @@ def deposit(Net_balance):
 #deposit funtion starts when called by atm function
 def withdraw(Net_balance):
     global net_balance
+
     #If amount is zero returns to atm function
     if float(net_balance) <= 0.0:
         print ("Withdrawl Impossible! \nYour Account Balance = Rs",net_balance,"\nPlease Deposit Amount First!\n")
