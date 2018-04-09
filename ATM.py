@@ -81,16 +81,17 @@ def deposit(Net_balance):
 
         #Check for negetive values
         if float(deposit_amount) >= 0:
-            #Deposit amount is incremented in counter
-            net_balance += float(deposit_amount)
-            print("You Have Successfully Depositted An Amount Of Rs",deposit_amount,'\n')
-            return
+            #check for extra large amount
+            if (len(deposit_amount) > 14) or ((len(str(float(deposit_amount)+net_balance))) > 14):
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print ('Amount Limit Exceeded!')
+                return
 
-        #check for extra large amount
-        elif (len(deposit_amount) > 15) or ((len(str(float(deposit_amount)+net_balance))) > 15):
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print ('Amount Limit Exceeded!')
-            return
+            #Deposit amount is incremented in counter
+            else:
+                net_balance += float(deposit_amount)
+                print("You Have Successfully Depositted An Amount Of Rs",deposit_amount,'\n')
+                return
 
         elif float(deposit_amount) < 0:
             os.system('cls' if os.name == 'nt' else 'clear')
