@@ -20,46 +20,9 @@ def atm(user_name,Net_balance,Pin,History):
     filename = join()
     clear = ('cls' if os.name == 'nt' else 'clear')
     #input for change of pin
-    new_pin_opt = input("Change Pin : \n1. Yes \n2. No \n")
-    os.system(clear)
-    if (new_pin_opt == '1') or (new_pin_opt.lower().startswith('y')):
-        os.system(clear)
-        pin_count = 0
-        print("Create Your Own Pin....")
-        while pin_count != 3:
-            print("Entries left :",(3-pin_count))
-            pin = str(input ("Enter 4-Digit Pin : "))
-            os.system(clear)
-
-            if (len(pin) == 4) and (pin.isdigit() == True):
-                if not pin == Pin:
-                    os.system(clear)
-                    confirm_pin = str(input ("Confirm Pin : "))
-
-                    if pin == confirm_pin:
-                        Pin = pin
-                        os.system(clear)
-                        print('Pin Changed Successfully! \n')
-                        pin_count = 3
-
-                    else:
-                        os.system(clear)
-                        print("Pin Change Unsuccessful!")
-                        print ("Your Pin Did Not Match! \n")
-                        pin_count +=1
-
-                else:
-                    pin_count += 1
-                    os.system(clear)
-                    print("Pin Change Unsuccessful!")
-                    print("Please Enter A New Pin \n")
-
-
-            else:
-                pin_count += 1
-                os.system(clear)
-                print("Pin Change Unsuccessful!")
-                print ("Invalid Pin! \n")
+    # new_pin_opt = input("Change Pin : \n1. Yes \n2. No \n")
+    # os.system(clear)
+    # if (new_pin_opt == '1') or (new_pin_opt.lower().startswith('y')):
 
     import time,datetime
     print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
@@ -68,11 +31,11 @@ def atm(user_name,Net_balance,Pin,History):
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. History \n0. Exit \n")
+    Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. Change Pin \n5. History \n0. Exit \n")
     os.system(clear)
 
     if not Opr.isdigit():
-        Opr = 5
+        Opr = 6
 
     while int(Opr) != 0:
 
@@ -91,6 +54,9 @@ def atm(user_name,Net_balance,Pin,History):
             withdraw(net_balance)
 
         elif int(Opr) == 4:
+            Pin = change_pin(Pin)
+
+        elif int(Opr) == 5:
             os.system(clear)
             print ("Your Acount Was Previously Logged in on",History,"\n")
 
@@ -100,9 +66,9 @@ def atm(user_name,Net_balance,Pin,History):
 
         #Incase above condition(s) get meet
         #Loop continues untill '0' is entered
-        Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. History \n0. Exit \n")
+        Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. Change Pin \n5. History \n0. Exit \n")
         if not Opr.isdigit():
-            Opr = 5
+            Opr = 6
             os.system(clear)
 
     os.system(clear)
@@ -190,3 +156,45 @@ def withdraw(Net_balance):
             os.system(clear)
             print ("Please Enter Right Amount! \n")
             return
+
+
+def change_pin(Pin):
+        clear = ('cls' if os.name == 'nt' else 'clear')
+        os.system(clear)
+        pin_count = 0
+        print("Create Your Own Pin....")
+        while pin_count != 3:
+            print("Entries left :",(3-pin_count))
+            pin = str(input ("Enter 4-Digit Pin : "))
+            os.system(clear)
+
+            if (len(pin) == 4) and (pin.isdigit() == True):
+                if not pin == Pin:
+                    os.system(clear)
+                    confirm_pin = str(input ("Confirm Pin : "))
+
+                    if pin == confirm_pin:
+                        Pin = pin
+                        os.system(clear)
+                        print('Pin Changed Successfully! \n')
+                        return Pin
+
+                    else:
+                        os.system(clear)
+                        print("Pin Change Unsuccessful!")
+                        print ("Your Pin Did Not Match! \n")
+                        pin_count +=1
+
+                else:
+                    pin_count += 1
+                    os.system(clear)
+                    print("Pin Change Unsuccessful!")
+                    print("Please Enter A New Pin \n")
+
+
+            else:
+                pin_count += 1
+                os.system(clear)
+                print("Pin Change Unsuccessful!")
+                print ("Invalid Pin! \n")
+        return(Pin)
