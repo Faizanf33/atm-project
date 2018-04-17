@@ -320,6 +320,5 @@ try:
 
 except Exception as exc:
     os.system(clear)
-    print ("Sorry for inconvenience.")
     print ("Some errors were encountered: %s" %exc)
-    print ("Please be careful next time.\nGood bye!")
+    print ("Sorry for inconvenience.\nGood bye!")
