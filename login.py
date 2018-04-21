@@ -83,8 +83,8 @@ def login(d):
             del d[user_name]
             os.system(clear)
             print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
-            print ("Welcome to YOB Admin Block!\n\nSelect Option Provided Below")
-            ad = input("1.Active Users \n2.Active User Names\n3.Users Info.\n4.Remove User\n0.Exit\n")
+            print ("::: Welcome to YOB Admin Block! :::\n\n:: Select Option Provided Below ::")
+            ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users History \n5. Remove User\n0. Exit\n")
             while ad != '0':
 
                 if ad == '1':
@@ -92,27 +92,35 @@ def login(d):
                     c_user = 0
                     for users in d:
                         c_user += 1
-                    print ("Active:")
+                    print (":: Active ::")
                     print ("Active Users :",c_user)
 
                 elif ad == '2':
                     os.system(clear)
                     c_user = 0
-                    print ("Active User Names:")
+                    print (":: Active User Names ::")
                     for users in d:
                         c_user += 1
                         print ("Active User",c_user,':',users)
 
                 elif ad == '3':
                     os.system(clear)
-                    print ("Users Info:")
-                    for info in d.keys():
-                        print ("Name =",info,", Pin :",d[info][0],", Amount :","{:,}".format(d[info][1]))
+                    print (":: Users Info ::")
+                    for user_info in d.keys():
+                        print ("Name =",user_info,", Pin :",d[user_info][0],", Amount :","{:,}".format(d[user_info][1]))
+
 
                 elif ad == '4':
                     os.system(clear)
+                    print (":: History ::")
+                    for user_info in d.keys():
+                        print (user_info,"was previously logged in on",d[user_info][2])
+
+                elif ad == '5':
+                    os.system(clear)
                     return del_account()
-                ad = input("1.Active Users \n2.Active User Names\n3.Users Info.\n4.Remove User\n0.Exit\n")
+
+                ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users History \n5. Remove User\n0. Exit\n")
             os.system(clear)
             return login_user()
 
