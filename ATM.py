@@ -113,6 +113,7 @@ def deposit(Net_balance):
             #Deposit amount is incremented in counter
             else:
                 net_balance += float(deposit_amount)
+                os.system(clear)
                 print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
                 return
 
