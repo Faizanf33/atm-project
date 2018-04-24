@@ -2,6 +2,7 @@ from __future__ import print_function
 from ATM import atm
 from encrypt import rot13
 from Data import data,join
+from acc_no_gen import account_no_gen
 import os
 import sys
 import csv
@@ -21,7 +22,7 @@ def login_user():
     #data funtion is called to check or make changes in it
     d = data()
 
-    user = input("Select One : \n1. Login \n2. Create New Account \n3. Delete Existing Account \n0. Exit \n")
+    user = input("Select One : \n1. Login \n2. Create New Account \n3. Activate Account \n4. De-Activate Account \n0. Exit \n")
     os.system(clear)
 
     if not str(user).isdigit():
@@ -40,7 +41,11 @@ def login_user():
 
     elif int(user) == 3:
         os.system(clear)
-        del_account()
+        activate_account()
+
+    elif int(user) == 4:
+        os.system(clear)
+        de_active_account()
 
     #exit the main funtion
     elif int(user) == 0:
@@ -49,7 +54,7 @@ def login_user():
     #in case any other number is entered except those listed above
     #recursion(main function called again)
     else:
-        print ("Invalid Selection!")
+        print ("Invalid Selection! '",user,"'")
         return login_user()
 
     return
@@ -74,53 +79,70 @@ def login(d):
             print ("Invalid User!")
             return login_user()
 
-    #--Admin Block--
-    if (user_name.lower() in d.keys()) and (user_name.lower() == 'admin access'):
-        user_name = user_name.lower()
-        pin = str(input("Enter 4-Digit Pin : "))
+    for item in d.keys():
+        if user_name.lower() in d[item]:
+            acc_no = item
 
-        if pin == d[user_name][0]:
-            del d[user_name]
+    if acc_no.startswith('#'):
+        os.system(clear)
+        print("Account Is De-Activated")
+        return login_user()
+
+    #--Admin Block--
+    elif (user_name.lower() == 'admin access'):
+        pin = str(input("Enter 4-Digit Pin : "))
+        if pin == d[acc_no][1]:
+            del d[acc_no]
             os.system(clear)
             print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
             print ("::: Welcome to YOB Admin Block! :::\n\n:: Select Option Provided Below ::")
-            ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users History \n5. Remove User\n0. Exit\n")
+            ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
             while ad != '0':
 
                 if ad == '1':
                     os.system(clear)
-                    c_user = 0
-                    for users in d:
-                        c_user += 1
-                    print (":: Active ::")
-                    print ("Active Users :",c_user)
+                    c_user, i_user = 0, 0
+                    for users in d.keys():
+                        if not users.startswith('#'):
+                            c_user += 1
+                        else:
+                            i_user += 1
+
+                    print(":: Users ::")
+                    print("Active Users :",c_user)
+                    print("Inactive Users :",i_user,'\n')
 
                 elif ad == '2':
                     os.system(clear)
                     c_user = 0
                     print (":: Active User Names ::")
-                    for users in d:
-                        c_user += 1
-                        print ("Active User",c_user,':',users)
+                    for users in d.keys():
+                        if not users.startswith('#'):
+                            c_user += 1
+                            print ("Active User",c_user,':',d[users][0])
+                    print('\n')
 
                 elif ad == '3':
                     os.system(clear)
                     print (":: Users Info ::")
                     for user_info in d.keys():
-                        print ("Name =",user_info,", Pin :",d[user_info][0],", Amount :","{:,}".format(d[user_info][1]))
-
+                        if not user_info.startswith('#'):
+                            print ("Name =",d[user_info][0],", Pin :",d[user_info][1],", Amount :","{:,}".format(d[user_info][2]))
+                    print('\n')
 
                 elif ad == '4':
                     os.system(clear)
-                    print (":: History ::")
+                    print (":: Users Acivity ::")
                     for user_info in d.keys():
-                        print (user_info,"was previously logged in on",d[user_info][2])
+                        if not user_info.startswith('#'):
+                            print ("Account Number :",user_info,"of Name :",d[user_info][0],"was previously logged in on",d[user_info][3])
+                    print('\n')
 
                 elif ad == '5':
                     os.system(clear)
-                    return del_account()
+                    return de_active_account()
 
-                ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users History \n5. Remove User\n0. Exit\n")
+                ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
             os.system(clear)
             return login_user()
 
@@ -129,18 +151,18 @@ def login(d):
             return login_user()
 
     #users block
-    elif user_name.lower() in d.keys():
+    elif not (user_name.lower() == 'admin access'):
         user_name_l = user_name.lower()
         while int(entry) != 3:
             print("Entries left :",(3-entry))
             pin = str(input("Enter 4-Digit Pin : "))
 
-            if pin == d[user_name_l][0]:
-                Pin = d[user_name_l][0]
-                Net_balance = d[user_name_l][1]
-                History = d[user_name_l][2]
+            if pin == d[acc_no][1]:
+                Pin = pin
+                Net_balance = d[acc_no][2]
+                History = d[acc_no][3]
                 os.system(clear)
-                return atm(user_name,Net_balance,Pin,History)
+                return atm(user_name,Net_balance,Pin,History,acc_no)
 
             else:
                 entry += 1
@@ -174,22 +196,24 @@ def new_account():
     auto_gen_pin = rd.randint(1000,9999)
     os.system(clear)
 
+    full_name = (user_name1.lower())+' '+(user_name2.lower())
+    acc_no = account_no_gen(full_name)
+
     print("Your Auto-Generated Pin : ",auto_gen_pin)
     confirm = input("Want To Use This Pin ? \n1. Yes \n2. No \n")
 
     if (confirm == '1') or (confirm.lower().startswith('y')):
         os.system(clear)
 
-        print ("Account Name :",user_name1+' '+user_name2,"\nPin :",auto_gen_pin)
+        print ("Account Name :",user_name1+' '+user_name2,"\nAccount Number :",acc_no,"\nPin :",auto_gen_pin)
         confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
         if (confirm == '1') or (confirm.lower().startswith('y')):
             os.system(clear)
             with open(filename, "a+") as wr:
-                enc_name = (user_name1.lower())+' '+(user_name2.lower())
                 #rot13() function is called for encoding
-                enc = rot13(enc_name)
-                new = [enc,auto_gen_pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
+                enc = rot13(full_name)
+                new = [acc_no,enc,auto_gen_pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
 
                 w = csv.writer(wr)
                 w.writerow(new)
@@ -230,10 +254,9 @@ def new_account():
                     if (confirm == '1') or (confirm.lower().startswith('y')):
                         os.system(clear)
                         with open(filename, "a+") as wr:
-                            enc_name = (user_name1.lower())+' '+(user_name2.lower())
                             #rot13() function is called for encoding
-                            enc = rot13(enc_name)
-                            new = [enc,pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
+                            enc = rot13(full_name)
+                            new = [acc_no,enc,pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
 
                             w = csv.writer(wr)
                             w.writerow(new)
@@ -264,51 +287,106 @@ def new_account():
         print ("Account Not Created!")
         return login_user()
 
-def del_account():
+def activate_account():
+    clear = ('cls' if os.name == 'nt' else 'clear')
+    d = data()
+    filename = join()
+
+    user_acc_no = str(input('Enter 12-Digit Account Number : '))
+    os.system(clear)
+
+    if not user_acc_no.isdigit():
+        print('Invalid Account!')
+        return login_user()
+
+    elif user_acc_no in d.keys():
+        print('Account Is Already Active!')
+        return login_user()
+
+    elif user_acc_no.isdigit():
+        ch_acc_no = str('#'+user_acc_no)
+
+        if ch_acc_no in d.keys():
+            d[user_acc_no] = d.pop(ch_acc_no)
+            print ("Activate Account Neme :",d[user_acc_no][0])
+            confirm = input("Please Confirm \n1. Yes \n2. No \n")
+
+            if (confirm == '1') or (confirm.lower().startswith('y')):
+                os.system(clear)
+                #over_writing of existing file
+                with open(filename,"w") as rd:
+                    r = csv.writer(rd)
+                    r.writerow(['Account Number','Name','PIN','Amount','Time'])
+                    rd.close()
+
+                with open(filename,"a") as ow:
+                    for item in d.keys():
+                        items = rot13(d[item][0])
+                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3])]
+                        o = csv.writer(ow)
+                        o.writerow(over_write)
+                    ow.close()
+                    print ("Account Activated Successfully! \n")
+                    return login_user()
+
+            elif (confirm == '2') or (confirm.lower().startswith('n')):
+                os.system(clear)
+                print ("Account Not Activated!")
+                return login_user()
+
+            else:
+                os.system(clear)
+                print ("Account Not Activated!")
+                return login_user()
+
+        else:
+            os.system(clear)
+            print('Account Does Not Exist')
+            return login_user()
+
+def de_active_account():
     clear = ('cls' if os.name == 'nt' else 'clear')
     d = data()
     filename = join()
 
     os.system(clear)
-    acc_name = input("Delete Account\nEnter Full Name : ")
+    acc_no = input("Account De-activate\nEnter Account Number : ")
 
-    if acc_name.lower() in d.keys():
-        acc_name = acc_name.lower()
+    if acc_no in d.keys():
         acc_pin = str(input("Enter 4-Digit Pin : "))
 
-        if acc_pin == d[acc_name][0]:
+        if acc_pin == d[acc_no][1]:
             os.system(clear)
-            print ("Delete Account :",acc_name)
+            print ("De-activate Account :",d[acc_no][0])
             confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
             if (confirm == '1') or (confirm.lower().startswith('y')):
                 os.system(clear)
-                del d[acc_name]
-
+                d[('#'+acc_no)] = d.pop(acc_no)
                 #over_writing of existing file
                 with open(filename,"w") as rd:
                     r = csv.writer(rd)
-                    r.writerow(['Name','PIN','Amount','History'])
+                    r.writerow(['Account Number','Name','PIN','Amount','Time'])
                     rd.close()
 
                 with open(filename,"a") as ow:
                     for item in d.keys():
-                        items = rot13(item)
-                        over_write = [items,d[item][0],str(d[item][1]),str(d[item][2])]
+                        items = rot13(d[item][0])
+                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3])]
                         o = csv.writer(ow)
                         o.writerow(over_write)
                     ow.close()
-                    print ("Account Deleted Successfully! \n")
+                    print ("Account De-Activated Successfully! \n")
                     return login_user()
 
             elif (confirm == '2') or (confirm.lower().startswith('n')):
                 os.system(clear)
-                print ("Account Not Deleted!")
+                print ("Account Not De-Activated!")
                 return login_user()
 
             else:
                 os.system(clear)
-                print ("Account Not Deleted!")
+                print ("Account Not De-Activated!")
                 return login_user()
 
         else:
@@ -318,15 +396,15 @@ def del_account():
 
     else:
         os.system(clear)
-        print ("Account Does Not Exist!")
+        print ("No match found!")
         return login_user()
 
 clear = ('cls' if os.name == 'nt' else 'clear')
-try:
-    os.system(clear)
-    login_user()
+# try:
+os.system(clear)
+login_user()
 
-except Exception as exc:
-    os.system(clear)
-    print ("Some errors were encountered: %s" %exc)
-    print ("Sorry for inconvenience.\nGood bye!")
+# except Exception as exc:
+#     os.system(clear)
+#     print ("Some errors were encountered: %s" %exc)
+#     print ("Sorry for inconvenience.\nGood bye!")
