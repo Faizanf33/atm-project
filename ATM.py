@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 from encrypt import rot13
-from Data import join
+from Data import join,data
 import csv
 
 net_balance = 0.0  #Counter for user amount
@@ -16,7 +16,7 @@ except:
 
 
 #Atm function called after successfull login
-def atm(user_name,Net_balance,Pin,History):
+def atm(user_name,Net_balance,Pin,History,acc_no):
     filename = join()
     clear = ('cls' if os.name == 'nt' else 'clear')
     #input for change of pin
@@ -41,11 +41,11 @@ def atm(user_name,Net_balance,Pin,History):
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. Change Pin \n5. History \n0. Exit \n")
+    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Change Pin \n6. Last Acive Session \n0. Exit \n")
     os.system(clear)
 
     if not Opr.isdigit():
-        Opr = 6
+        Opr = 7
 
     while int(Opr) != 0:
 
@@ -53,20 +53,24 @@ def atm(user_name,Net_balance,Pin,History):
             os.system(clear)
             print (":: Your Acount Balance = Rs","{:,} ::".format(net_balance),"\n")
 
-        #Deposit function is called
         elif int(Opr) == 2:
+            os.system(clear)
+            print(":: Your Account Number =",acc_no,":: \n")
+
+        #Deposit function is called
+        elif int(Opr) == 3:
             os.system(clear)
             deposit(net_balance)
 
         #Withdraw function is called
-        elif int(Opr) == 3:
+        elif int(Opr) == 4:
             os.system(clear)
             withdraw(net_balance)
 
-        elif int(Opr) == 4:
+        elif int(Opr) == 5:
             Pin = change_pin(Pin)
 
-        elif int(Opr) == 5:
+        elif int(Opr) == 6:
             os.system(clear)
             print (":: Your Acount Was Previously Logged in on",History,"::","\n")
 
@@ -76,9 +80,9 @@ def atm(user_name,Net_balance,Pin,History):
 
         #Incase above condition(s) get meet
         #Loop continues untill '0' is entered
-        Opr = input("Please Select An Option Provided Below : \n1. Check Account Balance \n2. Deposit \n3. Withdraw \n4. Change Pin \n5. History \n0. Exit \n")
+        Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Change Pin \n6. Last Acive Session \n0. Exit \n")
         if not Opr.isdigit():
-            Opr = 6
+            Opr = 7
             os.system(clear)
 
     os.system(clear)
@@ -87,7 +91,7 @@ def atm(user_name,Net_balance,Pin,History):
     with open(filename,'a+') as ap:
         #rot13() function is called for encoding
         enc = rot13(user_name.lower())
-        re_new = [enc,str(Pin),str(net_balance),time.strftime('%d-%b-%Y at %I:%M %p')]
+        re_new = [acc_no,enc,str(Pin),str(net_balance),time.strftime('%d-%b-%Y at %I:%M %p')]
         w = csv.writer(ap)
         w.writerow(re_new)
         ap.close()
@@ -171,42 +175,48 @@ def withdraw(Net_balance):
 
 
 def change_pin(Pin):
-        clear = ('cls' if os.name == 'nt' else 'clear')
+    clear = ('cls' if os.name == 'nt' else 'clear')
+    os.system(clear)
+    pin_count = 0
+    print(":: Create Your Own Pin....::")
+    while pin_count != 3:
+        print(":: Entries left :",(3-pin_count),"::")
+        pin = str(input ("Enter 4-Digit Pin : "))
         os.system(clear)
-        pin_count = 0
-        print(":: Create Your Own Pin....::")
-        while pin_count != 3:
-            print(":: Entries left :",(3-pin_count),"::")
-            pin = str(input ("Enter 4-Digit Pin : "))
-            os.system(clear)
 
-            if (len(pin) == 4) and (pin.isdigit() == True):
-                if not pin == Pin:
+        if (len(pin) == 4) and (pin.isdigit() == True):
+            if not pin == Pin:
+                os.system(clear)
+                confirm_pin = str(input ("Confirm Pin : "))
+
+                if pin == confirm_pin:
+                    Pin = pin
                     os.system(clear)
-                    confirm_pin = str(input ("Confirm Pin : "))
-
-                    if pin == confirm_pin:
-                        Pin = pin
-                        os.system(clear)
-                        print(':: Pin Changed Successfully! ::\n')
-                        return Pin
-
-                    else:
-                        os.system(clear)
-                        print(":: Pin Change Unsuccessful! ::")
-                        print (":: Your Pin Did Not Match! ::\n")
-                        pin_count +=1
+                    print(':: Pin Changed Successfully! ::\n')
+                    return Pin
 
                 else:
-                    pin_count += 1
                     os.system(clear)
                     print(":: Pin Change Unsuccessful! ::")
-                    print(":: Please Enter A New Pin ::\n")
-
+                    print (":: Your Pin Did Not Match! ::\n")
+                    pin_count +=1
 
             else:
                 pin_count += 1
                 os.system(clear)
                 print(":: Pin Change Unsuccessful! ::")
-                print(":: Invalid Pin! ::\n")
-        return(Pin)
+                print(":: Please Enter A New Pin ::\n")
+
+
+        else:
+            pin_count += 1
+            os.system(clear)
+            print(":: Pin Change Unsuccessful! ::")
+            print(":: Invalid Pin! ::\n")
+    return(Pin)
+
+# def amount_transfer():
+#     clear = ('cls' if os.name == 'nt' else 'clear')
+#     os.system(clear)
+#     d = data()
+    
