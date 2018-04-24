@@ -13,7 +13,7 @@ def join():
 def data():
     filename = join()
     d = {}
-    new = ['Name','PIN','Amount','History']
+    new = ['Account Number','Name','PIN','Amount','Time']
 
     try:
         #file size shorter than 13 bit
@@ -29,13 +29,13 @@ def data():
                 with open(filename, "r") as rd:
                         r = csv.reader(rd)
                         for indiv_user_info in r:
-                            if indiv_user_info == ['Name','PIN','Amount','History']:
+                            if indiv_user_info == ['Account Number','Name','PIN','Amount','Time']:
                                 continue
                             else:
                                 #rot13() function is called for decoding
-                                indiv_user_info[0] = rot13(indiv_user_info[0])
-                                indiv_user_info[2] = float(indiv_user_info[2])
-                                d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3]
+                                indiv_user_info[1] = rot13(indiv_user_info[1])
+                                indiv_user_info[3] = float(indiv_user_info[3])
+                                d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3],indiv_user_info[4]
                         return d
 
     except:
