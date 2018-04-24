@@ -400,11 +400,11 @@ def de_active_account():
         return login_user()
 
 clear = ('cls' if os.name == 'nt' else 'clear')
-# try:
-os.system(clear)
-login_user()
+try:
+    os.system(clear)
+    login_user()
 
-# except Exception as exc:
-#     os.system(clear)
-#     print ("Some errors were encountered: %s" %exc)
-#     print ("Sorry for inconvenience.\nGood bye!")
+except Exception as exc:
+    os.system(clear)
+    print ("Some errors were encountered: %s" %exc)
+    print ("Sorry for inconvenience.\nGood bye!")
