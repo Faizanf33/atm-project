@@ -6,9 +6,9 @@
 2. Run the program using: python3 login.py or python login.py
 
 3. Login using existing account
-      
+
       Or
-      
+
 4. Create new user and repeat step 3
 
 ## Admin Control
@@ -18,13 +18,15 @@ To get the Admin account, first create new account with the name "admin access"
 Admin Controls:
 
 You can
-- Check the active users.
+- Check the number of users.
 
-- Check the active accounts.
+- Check the active accounts name.
 
-- Check the account informations.
+- Check the accounts information.
 
-- Delete account.
+- Check the accounts activity.
+
+- De-Activate account.
 
 
 **Please issue errors encountered during process**
