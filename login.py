@@ -82,7 +82,8 @@ def login(d):
     for item in d.keys():
         if user_name.lower() in d[item]:
             acc_no = item
-
+            break
+        
         else:
             acc_no = ' '
 
