@@ -83,9 +83,17 @@ def login(d):
         if user_name.lower() in d[item]:
             acc_no = item
 
-    if acc_no.startswith('#'):
+        else:
+            acc_no = ' '
+
+    if acc_no == ' ':
         os.system(clear)
-        print("Account Is De-Activated")
+        print("Account not found/Invalid Name!")
+        return login_user()
+
+    elif acc_no.startswith('#'):
+        os.system(clear)
+        print("Account Is De-Activated!")
         return login_user()
 
     #--Admin Block--
