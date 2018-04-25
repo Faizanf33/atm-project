@@ -83,7 +83,7 @@ def login(d):
         if user_name.lower() in d[item]:
             acc_no = item
             break
-        
+
         else:
             acc_no = ' '
 
@@ -151,7 +151,7 @@ def login(d):
                     os.system(clear)
                     return de_active_account()
 
-                ad = input("1. Active Users \n2. Active User Names\n3. Users Info.\n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
+                ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
             os.system(clear)
             return login_user()
 
