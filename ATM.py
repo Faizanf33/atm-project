@@ -41,11 +41,11 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Change Pin \n6. Last Acive Session \n0. Exit \n")
+    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n0. Exit \n")
     os.system(clear)
 
     if not Opr.isdigit():
-        Opr = 7
+        Opr = 8
 
     while int(Opr) != 0:
 
@@ -68,11 +68,22 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
             withdraw(net_balance)
 
         elif int(Opr) == 5:
-            Pin = change_pin(Pin)
+            os.system(clear)
+            if net_balance < 0:
+                print (":: Amount Can Not Be Transferred! ::\n:: Your Acount Balance = Rs",balance,"::","\n")
+
+            else:
+                account_no = input('Enter 12-Digit Account Number : ')
+                amount = amount_transfer(account_no, net_balance)
+                net_balance -= float(amount)
 
         elif int(Opr) == 6:
             os.system(clear)
             print (":: Your Acount Was Previously Logged in on",History,"::","\n")
+
+        elif int(Opr) == 7:
+            os.system(clear)
+            Pin = change_pin(Pin)
 
         else:
             os.system(clear)
@@ -80,9 +91,9 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
 
         #Incase above condition(s) get meet
         #Loop continues untill '0' is entered
-        Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Change Pin \n6. Last Acive Session \n0. Exit \n")
+        Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n0. Exit \n")
         if not Opr.isdigit():
-            Opr = 7
+            Opr = 8
             os.system(clear)
 
     os.system(clear)
@@ -215,8 +226,69 @@ def change_pin(Pin):
             print(":: Invalid Pin! ::\n")
     return(Pin)
 
-# def amount_transfer():
-#     clear = ('cls' if os.name == 'nt' else 'clear')
-#     os.system(clear)
-#     d = data()
-    
+def amount_transfer(account_no, balance):
+    clear = ('cls' if os.name == 'nt' else 'clear')
+    os.system(clear)
+
+    d = data()
+    filename = join()
+    amount = 0
+
+    print (":: Amount Transfer ::")
+    Inactive_account = str('#'+account_no)
+
+    if Inactive_account in d.keys():
+        os.system(clear)
+        print ("Provided Account Number Is Not Active!")
+        return amount
+
+    elif account_no in d.keys():
+        try:
+            amount = input("Enter Amount In Rupees: ")
+
+            if float(amount) < 0:
+                os.system(clear)
+                print (":: Please Enter Right Amount! ::\n")
+                return amount_transfer(account_no, balance)
+
+            elif float(amount) > float(balance):
+                os.system(clear)
+                print (":: Amount Can Not Be Transferred! ::\n:: Your Acount Balance = Rs",balance,"::","\n")
+                return amount_transfer(account_no, balance)
+
+            else:
+                os.system(clear)
+                print(":: Account Number :",account_no,"::")
+                print(":: Name :",d[account_no][0],"::")
+                print(":: Amount Transfer = Rs","{:,} ::".format(float(amount)),"\n")
+
+                confirm = input("Please Confirm \n1. Yes \n2. No \n")
+
+                if (confirm == '1') or (confirm.lower().startswith('y')):
+                        with open(filename,'a+') as ap:
+                            #rot13() function is called for encoding
+                            enc = rot13(d[account_no][0])
+                            balance = str(float(d[account_no][2]) + float(amount))
+                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3]]
+                            w = csv.writer(ap)
+                            w.writerow(re_new)
+                            ap.close()
+
+                        os.system(clear)
+                        print("Amount Transferred Successfully!")
+                        return amount
+                else:
+                    amount = 0
+                    os.system(clear)
+                    print("Amount Transfer Unsuccessful!")
+                    return amount
+
+        except ValueError as err:
+            os.system(clear)
+            print("Error :",err)
+            print(":: Please Enter Right Amount! ::\n")
+            return amount_transfer(account_no, balance)
+    else:
+        os.system(clear)
+        print ("No Match Found!")
+        return amount
