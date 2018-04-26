@@ -3,6 +3,7 @@ from ATM import atm
 from encrypt import rot13
 from Data import data,join
 from acc_no_gen import account_no_gen
+import time,datetime
 import os
 import sys
 import csv
@@ -15,6 +16,9 @@ try:
     input = raw_input
 except:
     pass
+
+#clear the working terminal
+clear = ('cls' if os.name == 'nt' else 'clear')
 
 #main funtion which calls further funtions,execution starts from here
 def login_user():
@@ -62,7 +66,6 @@ def login_user():
 
 def login(d):
     clear = ('cls' if os.name == 'nt' else 'clear')
-    import time,datetime
     os.system(clear)
     user_name = input("Login\nEnter Full Name : ")
     entry = 0
@@ -99,66 +102,7 @@ def login(d):
 
     #--Admin Block--
     elif (user_name.lower() == 'admin access'):
-        pin = str(input("Enter 4-Digit Pin : "))
-        if pin == d[acc_no][1]:
-            del d[acc_no]
-            os.system(clear)
-            print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
-            print ("::: Welcome to YOB Admin Block! :::\n\n:: Select Option Provided Below ::")
-            ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
-            while ad != '0':
-
-                if ad == '1':
-                    os.system(clear)
-                    c_user, i_user = 0, 0
-                    for users in d.keys():
-                        if not users.startswith('#'):
-                            c_user += 1
-                        else:
-                            i_user += 1
-
-                    print(":: Users ::")
-                    print("Active Users :",c_user)
-                    print("Inactive Users :",i_user,'\n')
-
-                elif ad == '2':
-                    os.system(clear)
-                    c_user = 0
-                    print (":: Active User Names ::")
-                    for users in d.keys():
-                        if not users.startswith('#'):
-                            c_user += 1
-                            print ("Active User",c_user,':',d[users][0])
-                    print('\n')
-
-                elif ad == '3':
-                    os.system(clear)
-                    print (":: Users Info ::")
-                    for user_info in d.keys():
-                        if not user_info.startswith('#'):
-                            print ("Name =",d[user_info][0],", Pin :",d[user_info][1],", Amount :","{:,}".format(d[user_info][2]))
-                    print('\n')
-
-                elif ad == '4':
-                    os.system(clear)
-                    print (":: Users Acivity ::")
-                    for user_info in d.keys():
-                        if not user_info.startswith('#'):
-                            print ("Account Number :",user_info,"of Name :",d[user_info][0],"was previously logged in on",d[user_info][3])
-                    print('\n')
-
-                elif ad == '5':
-                    os.system(clear)
-                    return de_active_account()
-
-                ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
-            os.system(clear)
-            return login_user()
-
-        else:
-            os.system(clear)
-            return login_user()
-
+        return admin_block(acc_no)
     #users block
     elif not (user_name.lower() == 'admin access'):
         user_name_l = user_name.lower()
@@ -240,8 +184,6 @@ def new_account():
             print ("Account Not Created!")
             return new_account()
 
-
-
     else:
         os.system(clear)
         pin_count = 0
@@ -257,7 +199,7 @@ def new_account():
 
                 if pin == confirm_pin:
                     os.system(clear)
-                    print ("Account Name :",user_name1+' '+user_name2,"\nPin :",pin)
+                    print ("Account Name :",user_name1+' '+user_name2,"\nAccount Number :",acc_no,"\nPin :",pin)
                     confirm = input("Please Confirm \n1. Yes \n2. No \n")
 
                     if (confirm == '1') or (confirm.lower().startswith('y')):
@@ -408,7 +350,70 @@ def de_active_account():
         print ("No match found!")
         return login_user()
 
-clear = ('cls' if os.name == 'nt' else 'clear')
+def admin_block(acc_no):
+    clear = ('cls' if os.name == 'nt' else 'clear')
+    d = data()
+
+    pin = str(input("Enter 4-Digit Pin : "))
+    if pin == d[acc_no][1]:
+        del d[acc_no]
+        os.system(clear)
+        print (time.strftime('Date:%d-%b-%Y \nTime:%I:%M %p  Today:%A\n'))
+        print ("::: Welcome to YOB Admin Block! :::\n\n:: Select Option Provided Below ::")
+        ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
+        while ad != '0':
+
+            if ad == '1':
+                os.system(clear)
+                c_user, i_user = 0, 0
+                for users in d.keys():
+                    if not users.startswith('#'):
+                        c_user += 1
+                    else:
+                        i_user += 1
+
+                print(":: Users ::")
+                print("Active Users :",c_user)
+                print("Inactive Users :",i_user,'\n')
+
+            elif ad == '2':
+                os.system(clear)
+                c_user = 0
+                print (":: Active User Names ::")
+                for users in d.keys():
+                    if not users.startswith('#'):
+                        c_user += 1
+                        print ("Active User",c_user,':',d[users][0])
+                print('\n')
+
+            elif ad == '3':
+                os.system(clear)
+                print (":: Users Info ::")
+                for user_info in d.keys():
+                    if not user_info.startswith('#'):
+                        print ("Name =",d[user_info][0],", Pin :",d[user_info][1],", Amount :","{:,}".format(d[user_info][2]))
+                print('\n')
+
+            elif ad == '4':
+                os.system(clear)
+                print (":: Users Acivity ::")
+                for user_info in d.keys():
+                    if not user_info.startswith('#'):
+                        print ("Account Number :",user_info,"of Name :",d[user_info][0],"was previously logged in on",d[user_info][3])
+                print('\n')
+
+            elif ad == '5':
+                os.system(clear)
+                return de_active_account()
+
+            ad = input("1. Number Of Users \n2. Active User Names \n3. Active Users Info. \n4. Users Acivity \n5. De-Activate Account\n0. Exit\n")
+        os.system(clear)
+        return login_user()
+
+    else:
+        os.system(clear)
+        return login_user()
+
 try:
     os.system(clear)
     login_user()
