@@ -8,6 +8,7 @@ import os
 import sys
 import csv
 import random as rd
+from getpass import getpass as gp
 
 
 # Using input() in python 2 or 3
@@ -108,7 +109,7 @@ def login(d):
         user_name_l = user_name.lower()
         while int(entry) != 3:
             print("Entries left :",(3-entry))
-            pin = str(input("Enter 4-Digit Pin : "))
+            pin = str(gp("Enter 4-Digit Pin : "))
 
             if pin == d[acc_no][1]:
                 Pin = pin
@@ -190,12 +191,12 @@ def new_account():
         print("Create Your Own Pin....")
         while pin_count != 3:
             print("Entries left :",(3-pin_count))
-            pin = str(input ("Enter 4-Digit Pin : "))
+            pin = str(gp ("Enter 4-Digit Pin : "))
             os.system(clear)
 
             if (len(pin) == 4) and (pin.isdigit() == True):
                 os.system(clear)
-                confirm_pin = str(input ("Confirm Pin : "))
+                confirm_pin = str(gp ("Confirm Pin : "))
 
                 if pin == confirm_pin:
                     os.system(clear)
@@ -304,7 +305,7 @@ def de_active_account():
     acc_no = input("Account De-activate\nEnter Account Number : ")
 
     if acc_no in d.keys():
-        acc_pin = str(input("Enter 4-Digit Pin : "))
+        acc_pin = str(gp("Enter 4-Digit Pin : "))
 
         if acc_pin == d[acc_no][1]:
             os.system(clear)
@@ -354,7 +355,7 @@ def admin_block(acc_no):
     clear = ('cls' if os.name == 'nt' else 'clear')
     d = data()
 
-    pin = str(input("Enter 4-Digit Pin : "))
+    pin = str(gp("Enter 4-Digit Pin : "))
     if pin == d[acc_no][1]:
         del d[acc_no]
         os.system(clear)

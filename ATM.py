@@ -3,6 +3,7 @@ import os
 from encrypt import rot13
 from Data import join,data
 import csv
+from getpass import getpass as gp
 
 net_balance = 0.0  #Counter for user amount
 
@@ -197,13 +198,13 @@ def change_pin(Pin):
     print(":: Create Your Own Pin....::")
     while pin_count != 3:
         print(":: Entries left :",(3-pin_count),"::")
-        pin = str(input ("Enter 4-Digit Pin : "))
+        pin = str(gp ("Enter 4-Digit Pin : "))
         os.system(clear)
 
         if (len(pin) == 4) and (pin.isdigit() == True):
             if not pin == Pin:
                 os.system(clear)
-                confirm_pin = str(input ("Confirm Pin : "))
+                confirm_pin = str(gp ("Confirm Pin : "))
 
                 if pin == confirm_pin:
                     Pin = pin
