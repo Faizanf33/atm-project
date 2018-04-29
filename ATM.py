@@ -74,8 +74,13 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
 
             else:
                 account_no = input('Enter 12-Digit Account Number : ')
-                amount = amount_transfer(account_no, net_balance)
-                net_balance -= float(amount)
+                if (account_no == acc_no):
+                    os.system(clear)
+                    print(":: Amount Transfer Not Possible! ::")
+                    print(":: Provided Account Number Is Yours! ::\n")
+                else:
+                    amount = amount_transfer(account_no, net_balance)
+                    net_balance -= float(amount)
 
         elif int(Opr) == 6:
             os.system(clear)
@@ -239,7 +244,7 @@ def amount_transfer(account_no, balance):
 
     if Inactive_account in d.keys():
         os.system(clear)
-        print ("Provided Account Number Is Not Active!")
+        print (":: Provided Account Number Is Not Active! ::")
         return amount
 
     elif account_no in d.keys():
@@ -275,12 +280,12 @@ def amount_transfer(account_no, balance):
                             ap.close()
 
                         os.system(clear)
-                        print("Amount Transferred Successfully!")
+                        print(":: Amount Transferred Successfully! ::")
                         return amount
                 else:
                     amount = 0
                     os.system(clear)
-                    print("Amount Transfer Unsuccessful!")
+                    print(":: Amount Transfer Unsuccessful! ::")
                     return amount
 
         except ValueError as err:
@@ -290,5 +295,5 @@ def amount_transfer(account_no, balance):
             return amount_transfer(account_no, balance)
     else:
         os.system(clear)
-        print ("No Match Found!")
+        print (":: No Match Found! ::")
         return amount
