@@ -70,7 +70,7 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
 
         elif int(Opr) == 5:
             os.system(clear)
-            if net_balance < 0:
+            if net_balance < 0.0:
                 print (":: Amount Can Not Be Transferred! ::\n:: Your Acount Balance = Rs",balance,"::","\n")
 
             else:
@@ -123,7 +123,7 @@ def deposit(Net_balance):
         deposit_amount = input("Enter Amount In Rupees: ")
 
         #Check for negetive values
-        if float(deposit_amount) >= 0:
+        if float(deposit_amount) >= 0.0:
             #check for extra large amount
             #limits amount towards power of e
             if (len(deposit_amount) > 14) or ((len(str(float(deposit_amount)+net_balance))) > 14):
@@ -138,7 +138,7 @@ def deposit(Net_balance):
                 print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
                 return
 
-        elif float(deposit_amount) < 0:
+        elif float(deposit_amount) < 0.0:
             os.system(clear)
             #If user inputs negetive amount
             print (":: Please Enter Right Amount! ::\n")
@@ -170,7 +170,7 @@ def withdraw(Net_balance):
             os.system(clear)
 
             #If user inputs negetive amount
-            if float(with_draw) < 0:
+            if float(with_draw) < 0.0:
                 os.system(clear)
                 print (":: Please Enter Right Amount! ::\n")
                 return withdraw(net_balance)
@@ -239,7 +239,7 @@ def amount_transfer(account_no, balance, acc_no):
 
     d = data()
     filename = join()
-    amount = 0
+    amount = 0.0
 
     print (":: Amount Transfer ::")
     Inactive_account = str('#'+account_no)
@@ -253,10 +253,10 @@ def amount_transfer(account_no, balance, acc_no):
         try:
             amount = input("Enter Amount In Rupees: ")
 
-            if float(amount) < 0:
+            if float(amount) < 0.0 or ('-' in amount):
                 os.system(clear)
                 print (":: Please Enter Right Amount! ::\n")
-                return amount_transfer(account_no, balance)
+                return amount_transfer(account_no, balance, acc_no)
 
             elif float(amount) > float(balance):
                 os.system(clear)
