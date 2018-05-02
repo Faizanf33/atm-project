@@ -115,7 +115,15 @@ def login(d):
                 Pin = pin
                 Net_balance = d[acc_no][2]
                 History = d[acc_no][3]
+                Message = d[acc_no][4]
                 os.system(clear)
+
+                # Shows message at the top if there is any!
+                if (Message == "None"):
+                    (None)
+                else:
+                    print ("Message: ",Message)
+
                 return atm(user_name,Net_balance,Pin,History,acc_no)
 
             else:
