@@ -73,7 +73,7 @@ def login(d):
     if (d == None):
         os.system(clear)
         print ("Please create an account first!")
-        return login_user()
+        return new_account()
 
     for a in user_name:
         if ((ord(a) >= 65) and (ord(a) <= 90)) or ((ord(a) >= 97) and (ord(a) <= 122)) or (ord(a) == 32):
