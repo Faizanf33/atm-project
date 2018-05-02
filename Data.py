@@ -32,10 +32,14 @@ def data():
                             if indiv_user_info == ['Account Number','Name','PIN','Amount','Time']:
                                 continue
                             else:
-                                #rot13() function is called for decoding
-                                indiv_user_info[1] = rot13(indiv_user_info[1])
-                                indiv_user_info[3] = float(indiv_user_info[3])
-                                d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3],indiv_user_info[4]
+                                try:
+                                    #rot13() function is called for decoding
+                                    indiv_user_info[1] = rot13(indiv_user_info[1])
+                                    indiv_user_info[3] = float(indiv_user_info[3])
+                                    d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3],indiv_user_info[4],indiv_user_info[5]
+
+                                except IndexError:
+                                    d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3],indiv_user_info[4],"None"
                         return d
 
     except:
