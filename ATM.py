@@ -261,7 +261,7 @@ def amount_transfer(account_no, balance, acc_no):
             elif float(amount) > float(balance):
                 os.system(clear)
                 print (":: Amount Can Not Be Transferred! ::\n:: Your Acount Balance = Rs",balance,"::","\n")
-                return amount_transfer(account_no, balance)
+                return amount_transfer(account_no, balance, acc_no)
 
             else:
                 os.system(clear)
@@ -295,7 +295,7 @@ def amount_transfer(account_no, balance, acc_no):
             os.system(clear)
             print("Error :",err)
             print(":: Please Enter Right Amount! ::\n")
-            return amount_transfer(account_no, balance)
+            return amount_transfer(account_no, balance, acc_no)
     else:
         os.system(clear)
         print (":: No Match Found! ::")
