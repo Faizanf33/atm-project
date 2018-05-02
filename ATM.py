@@ -80,7 +80,7 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
                     print(":: Amount Transfer Not Possible! ::")
                     print(":: Provided Account Number Is Yours! ::\n")
                 else:
-                    amount = amount_transfer(account_no, net_balance)
+                    amount = amount_transfer(account_no, net_balance, acc_no)
                     net_balance -= float(amount)
 
         elif int(Opr) == 6:
@@ -93,7 +93,7 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
 
         else:
             os.system(clear)
-            print (":: Wrong Option! ::")
+            print (":: Invalid Selection! ::")
 
         #Incase above condition(s) get meet
         #Loop continues untill '0' is entered
@@ -232,7 +232,8 @@ def change_pin(Pin):
             print(":: Invalid Pin! ::\n")
     return(Pin)
 
-def amount_transfer(account_no, balance):
+def amount_transfer(account_no, balance, acc_no):
+    import time,datetime
     clear = ('cls' if os.name == 'nt' else 'clear')
     os.system(clear)
 
@@ -275,7 +276,8 @@ def amount_transfer(account_no, balance):
                             #rot13() function is called for encoding
                             enc = rot13(d[account_no][0])
                             balance = str(float(d[account_no][2]) + float(amount))
-                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3]]
+                            Message = str("Amount of 'Rs "+str(amount)+"' was received on "+str(time.strftime('%d-%b-%Y at %I:%M %p'))+", through Account Number: "+str(acc_no))
+                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3],Message]
                             w = csv.writer(ap)
                             w.writerow(re_new)
                             ap.close()
