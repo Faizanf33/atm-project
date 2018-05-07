@@ -26,6 +26,8 @@ You can
 
 - Check the accounts activity.
 
+- Search accounts
+
 - De-Activate account.
 
 
