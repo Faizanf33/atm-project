@@ -1,12 +1,17 @@
+#IMPORTS
+## USING PYTHON BUILT-IN LIBRARIES
 from __future__ import print_function
-import os
+from getpass import getpass as gp
+import os, csv
+
+##USING SOURCE FILES
 from encrypt import rot13
 from Data import join,data
-import csv
-from getpass import getpass as gp
+from send_mail import sendmail
+#END OF IMPORTS
 
-net_balance = 0.0  #Counter for user amount
-
+#Counter for user amount
+net_balance = 0.0
 
 # Using input() in python 2 or 3
 try:
@@ -17,7 +22,7 @@ except:
 
 
 #Atm function called after successfull login
-def atm(user_name,Net_balance,Pin,History,acc_no):
+def atm(user_name,Net_balance,Pin,History,acc_no,address):
     filename = join()
     clear = ('cls' if os.name == 'nt' else 'clear')
     #input for change of pin
@@ -37,8 +42,8 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
         Y                000            BBBBBB
     """)
 
-    print(("Dear"),user_name+("!"))
-    print("Welcome To YOB Service \n")
+    print(("DEAR"),(user_name.upper())+("!"))
+    print("WELCOME TO YOB SERVICE \n")
     #User input for selection
     global net_balance
     net_balance += Net_balance
@@ -108,7 +113,7 @@ def atm(user_name,Net_balance,Pin,History,acc_no):
     with open(filename,'a+') as ap:
         #rot13() function is called for encoding
         enc = rot13(user_name.lower())
-        re_new = [acc_no,enc,str(Pin),str(net_balance),time.strftime('%d-%b-%Y at %I:%M %p')]
+        re_new = [acc_no,enc,str(Pin),str(net_balance),time.strftime('%d-%b-%Y at %I:%M %p'),address]
         w = csv.writer(ap)
         w.writerow(re_new)
         ap.close()
@@ -277,7 +282,7 @@ def amount_transfer(account_no, balance, acc_no):
                             enc = rot13(d[account_no][0])
                             balance = str(float(d[account_no][2]) + float(amount))
                             Message = str("Amount of 'Rs "+str(amount)+"' was received on "+str(time.strftime('%d-%b-%Y at %I:%M %p'))+", through Account Number: "+str(acc_no))
-                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3],Message]
+                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3],Message,d[account_no][5]]
                             w = csv.writer(ap)
                             w.writerow(re_new)
                             ap.close()

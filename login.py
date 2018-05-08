@@ -1,14 +1,18 @@
+#IMPORTS
+## USING PYTHON BUILT-IN LIBRARIES
 from __future__ import print_function
+import time,datetime
+import os, sys, csv
+import random as rd
+from getpass import getpass as gp
+
+##USING SOURCE FILES
 from ATM import atm
 from encrypt import rot13
 from Data import data,join
 from acc_no_gen import account_no_gen
-import time,datetime
-import os
-import sys
-import csv
-import random as rd
-from getpass import getpass as gp
+from send_mail import sendmail
+#END OF IMPORTS
 
 
 # Using input() in python 2 or 3
@@ -18,7 +22,7 @@ try:
 except:
     pass
 
-#clear the working terminal
+#Clear the working terminal
 clear = ('cls' if os.name == 'nt' else 'clear')
 
 #main funtion which calls further funtions,execution starts from here
@@ -115,7 +119,8 @@ def login(d):
                 Pin = pin
                 Net_balance = d[acc_no][2]
                 History = d[acc_no][3]
-                Message = d[acc_no][4]
+                Mail_address = d[acc_no][4]
+                Message = d[acc_no][5]
                 os.system(clear)
 
                 # Shows message at the top if there is any!
@@ -124,7 +129,7 @@ def login(d):
                 else:
                     print ("Message: ",Message)
 
-                return atm(user_name,Net_balance,Pin,History,acc_no)
+                return atm(user_name,Net_balance,Pin,History,acc_no,Mail_address)
 
             else:
                 entry += 1
@@ -161,8 +166,22 @@ def new_account():
     full_name = (user_name1.lower())+' '+(user_name2.lower())
     acc_no = account_no_gen(full_name)
 
+    Mail_address = input("Please Enter A Valid Email Address : ")
+    MSG = "Confirming mail address!"+"\n\n"+"Account Number : "+acc_no
+    confirm_mail = sendmail(Mail_address, MSG, "Confirmation Mail")
+    if confirm_mail == True:
+        os.system(clear)
+        print("You Will Shortly Receive A Confirming Mail!")
+        confirm_mail = Mail_address
+
+    else:
+        os.system(clear)
+        print(confirm_mail)
+        confirm_mail = "None"
+
     print("Your Auto-Generated Pin : ",auto_gen_pin)
     confirm = input("Want To Use This Pin ? \n1. Yes \n2. No \n")
+
 
     if (confirm == '1') or (confirm.lower().startswith('y')):
         os.system(clear)
@@ -175,7 +194,7 @@ def new_account():
             with open(filename, "a+") as wr:
                 #rot13() function is called for encoding
                 enc = rot13(full_name)
-                new = [acc_no,enc,auto_gen_pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
+                new = [acc_no,enc,auto_gen_pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p'),confirm_mail]
 
                 w = csv.writer(wr)
                 w.writerow(new)
@@ -216,7 +235,7 @@ def new_account():
                         with open(filename, "a+") as wr:
                             #rot13() function is called for encoding
                             enc = rot13(full_name)
-                            new = [acc_no,enc,pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p')]
+                            new = [acc_no,enc,pin,'0.0',time.strftime('%d-%b-%Y at %I:%M %p'),confirm_mail]
 
                             w = csv.writer(wr)
                             w.writerow(new)
@@ -276,13 +295,13 @@ def activate_account():
                 #over_writing of existing file
                 with open(filename,"w") as rd:
                     r = csv.writer(rd)
-                    r.writerow(['Account Number','Name','PIN','Amount','Time'])
+                    r.writerow(['Account Number','Name','PIN','Amount','Time','Email Address'])
                     rd.close()
 
                 with open(filename,"a") as ow:
                     for item in d.keys():
                         items = rot13(d[item][0])
-                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3])]
+                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3]),str(d[item][4])]
                         o = csv.writer(ow)
                         o.writerow(over_write)
                     ow.close()
@@ -326,13 +345,13 @@ def de_active_account():
                 #over_writing of existing file
                 with open(filename,"w") as rd:
                     r = csv.writer(rd)
-                    r.writerow(['Account Number','Name','PIN','Amount','Time'])
+                    r.writerow(['Account Number','Name','PIN','Amount','Time','Email Address'])
                     rd.close()
 
                 with open(filename,"a") as ow:
                     for item in d.keys():
                         items = rot13(d[item][0])
-                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3])]
+                        over_write = [item,items,str(d[item][1]),str(d[item][2]),str(d[item][3]),str(d[item][4])]
                         o = csv.writer(ow)
                         o.writerow(over_write)
                     ow.close()
