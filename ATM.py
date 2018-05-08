@@ -187,9 +187,10 @@ def deposit(Net_balance, address):
             else:
                 net_balance += float(deposit_amount)
                 os.system(clear)
-                print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
                 MSG = "You Have Successfully Depositted An Amount Of Rs "+str(deposit_amount)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
-                sendmail(address, MSG)
+                msg = sendmail(address, MSG)
+                print(msg)
+                print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
                 return
 
         elif float(deposit_amount) < 0.0:
@@ -232,9 +233,10 @@ def withdraw(Net_balance, address):
             #Checks if amount in withdraw is less than amount in counter
             elif float(with_draw) <= net_balance:
                 net_balance -= float(with_draw)
-                print(":: You Have Successfully Withdrawn An Amount Of Rs",with_draw,"::",'\n')
                 MSG = "You Have Successfully Withdrawn An Amount Of Rs "+str(with_draw)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
-                sendmail(address, MSG)
+                msg = sendmail(address, MSG)
+                print(msg)
+                print(":: You Have Successfully Withdrawn An Amount Of Rs",with_draw,"::",'\n')
                 return
 
             else:
@@ -266,9 +268,10 @@ def change_pin(Pin):
                 if pin == confirm_pin:
                     Pin = pin
                     os.system(clear)
-                    print(':: Pin Changed Successfully! ::\n')
                     MSG = "You Have Successfully Changed Your Pin"
-                    sendmail(address, MSG)
+                    msg = sendmail(address, MSG)
+                    print(msg)
+                    print(':: Pin Changed Successfully! ::\n')
                     return(Pin)
 
                 else:
@@ -343,11 +346,12 @@ def amount_transfer(account_no, balance, acc_no, address):
                             ap.close()
 
                         os.system(clear)
-                        print(":: Amount Transferred Successfully! ::")
                         MSG_from = "You Have Successfully Transferred An Amount Of Rs "+str(amount)+" To A/C #"+str(account_no)+"\n\nYour Net Account Balance Is Rs "+str(float(current_balance) - float(amount))
                         MSG_to = "You Have Received An Amount Of Rs "+str(amount)+" From A/C #"+str(acc_no)+"\n\nYour Net Account Balance Is Rs "+str(float(balance))
                         sendmail(address, MSG_from)
-                        sendmail(d[account_no][4], MSG_to)
+                        msg2 = sendmail(d[account_no][4], MSG_to)
+                        print(msg2)
+                        print(":: Amount Transferred Successfully! ::")
                         return amount
                 else:
                     amount = 0
