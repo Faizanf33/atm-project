@@ -47,11 +47,11 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
     #User input for selection
     global net_balance
     net_balance += Net_balance
-    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n0. Exit \n")
+    Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n8. Change/Verify Mail Address \n0. Exit \n")
     os.system(clear)
 
     if not Opr.isdigit():
-        Opr = 8
+        Opr = 9
 
     while int(Opr) != 0:
 
@@ -66,13 +66,14 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
         #Deposit function is called
         elif int(Opr) == 3:
             os.system(clear)
-            deposit(net_balance)
+            deposit(net_balance, address)
 
         #Withdraw function is called
         elif int(Opr) == 4:
             os.system(clear)
-            withdraw(net_balance)
+            withdraw(net_balance, address)
 
+        #Amount Transfer function is called
         elif int(Opr) == 5:
             os.system(clear)
             if net_balance < 0.0:
@@ -85,16 +86,62 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
                     print(":: Amount Transfer Not Possible! ::")
                     print(":: Provided Account Number Is Yours! ::\n")
                 else:
-                    amount = amount_transfer(account_no, net_balance, acc_no)
+                    amount = amount_transfer(account_no, net_balance, acc_no, address)
                     net_balance -= float(amount)
 
         elif int(Opr) == 6:
             os.system(clear)
             print (":: Your Acount Was Previously Logged in on",History,"::","\n")
 
+        #Change Pin function is called
         elif int(Opr) == 7:
             os.system(clear)
-            Pin = change_pin(Pin)
+            Pin = change_pin(Pin, address)
+
+        elif int(Opr) == 8:
+            os.system(clear)
+            Mail_address = input(":: Please Enter A Valid Email Address : ")
+
+            if Mail_address == address:
+                os.system(clear)
+                print(":: Your Email Address Is Verified! ::\n:: Want To Change Your Address ?")
+                opt = input("1. Yes\n2. No \n")
+                os.system(clear)
+
+                if opt.lower().startswith("y") or opt == '1':
+                    Mail_address = input(":: Please Enter A New Valid Email Address : ")
+
+                    if Mail_address == address:
+                        os.system(clear)
+                        print(":: Email Address Already Verified! ::")
+
+                    else:
+                        verify = sendmail(Mail_address,"Confirming Mail Address.\n\nAccount Number : "+acc_no, "Confirmation Mail")
+
+                        if verify == True:
+                            os.system(clear)
+                            print(":: You Will Shortly Receive A Confirming Mail! ::")
+                            address = Mail_address
+
+                        else:
+                            os.system(clear)
+                            print(verify)
+
+                else:
+                    print(":: Email Address Unchanged! ::")
+
+            else:
+                os.system(clear)
+                verify = sendmail(Mail_address,"Confirming Mail Address.\n\nAccount Number : "+acc_no, "Confirmation Mail")
+
+                if verify == True:
+                    os.system(clear)
+                    print(":: You Will Shortly Receive A Confirming Mail! ::")
+                    address = Mail_address
+
+                else:
+                    os.system(clear)
+                    print(verify)
 
         else:
             os.system(clear)
@@ -102,9 +149,9 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
 
         #Incase above condition(s) get meet
         #Loop continues untill '0' is entered
-        Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n0. Exit \n")
+        Opr = input(":: Please Select An Option Provided Below : \n1. Check Account Balance \n2. Check Acount Number \n3. Deposit \n4. Withdraw \n5. Transfer Amount \n6. Last Acive Session \n7. Change Pin  \n8. Change/Verify Mail Address \n0. Exit \n")
         if not Opr.isdigit():
-            Opr = 8
+            Opr = 9
             os.system(clear)
 
     os.system(clear)
@@ -120,7 +167,7 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
     return
 
 #Deposit funtion starts when called by atm function
-def deposit(Net_balance):
+def deposit(Net_balance, address):
     clear = ('cls' if os.name == 'nt' else 'clear')
     global net_balance
     print(":: Deposit ::")
@@ -141,26 +188,28 @@ def deposit(Net_balance):
                 net_balance += float(deposit_amount)
                 os.system(clear)
                 print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
+                MSG = "You Have Successfully Depositted An Amount Of Rs "+str(deposit_amount)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
+                sendmail(address, MSG)
                 return
 
         elif float(deposit_amount) < 0.0:
             os.system(clear)
             #If user inputs negetive amount
             print (":: Please Enter Right Amount! ::\n")
-            return deposit(net_balance)
+            return deposit(net_balance, address)
 
         else:
             os.system(clear)
             print (":: Please Enter Right Amount! ::\n")
-            return deposit(net_balance)
+            return deposit(net_balance, address)
 
     except ValueError:
         os.system(clear)
         print (":: Please Enter Right Amount! ::\n")
-        return deposit(net_balance)
+        return deposit(net_balance, address)
 
 #deposit funtion starts when called by atm function
-def withdraw(Net_balance):
+def withdraw(Net_balance, address):
     clear = ('cls' if os.name == 'nt' else 'clear')
     global net_balance
     print(":: Withdraw ::")
@@ -178,22 +227,25 @@ def withdraw(Net_balance):
             if float(with_draw) < 0.0:
                 os.system(clear)
                 print (":: Please Enter Right Amount! ::\n")
-                return withdraw(net_balance)
+                return withdraw(net_balance, address)
 
             #Checks if amount in withdraw is less than amount in counter
             elif float(with_draw) <= net_balance:
                 net_balance -= float(with_draw)
                 print(":: You Have Successfully Withdrawn An Amount Of Rs",with_draw,"::",'\n')
+                MSG = "You Have Successfully Withdrawn An Amount Of Rs "+str(with_draw)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
+                sendmail(address, MSG)
                 return
 
             else:
                 os.system(clear)
                 print (":: Withdrawl Impossible! ::\n:: Your Acount Balance = Rs",net_balance,"::","\n")
-            return withdraw(net_balance)
+            return withdraw(net_balance, address)
+
         except ValueError:
             os.system(clear)
             print (":: Please Enter Right Amount! ::\n")
-            return withdraw(net_balance)
+            return withdraw(net_balance, address)
 
 
 def change_pin(Pin):
@@ -215,7 +267,9 @@ def change_pin(Pin):
                     Pin = pin
                     os.system(clear)
                     print(':: Pin Changed Successfully! ::\n')
-                    return Pin
+                    MSG = "You Have Successfully Changed Your Pin"
+                    sendmail(address, MSG)
+                    return(Pin)
 
                 else:
                     os.system(clear)
@@ -237,7 +291,7 @@ def change_pin(Pin):
             print(":: Invalid Pin! ::\n")
     return(Pin)
 
-def amount_transfer(account_no, balance, acc_no):
+def amount_transfer(account_no, balance, acc_no, address):
     import time,datetime
     clear = ('cls' if os.name == 'nt' else 'clear')
     os.system(clear)
@@ -261,12 +315,12 @@ def amount_transfer(account_no, balance, acc_no):
             if float(amount) < 0.0 or ('-' in amount):
                 os.system(clear)
                 print (":: Please Enter Right Amount! ::\n")
-                return amount_transfer(account_no, balance, acc_no)
+                return amount_transfer(account_no, balance, acc_no, address)
 
             elif float(amount) > float(balance):
                 os.system(clear)
                 print (":: Amount Can Not Be Transferred! ::\n:: Your Acount Balance = Rs",balance,"::","\n")
-                return amount_transfer(account_no, balance, acc_no)
+                return amount_transfer(account_no, balance, acc_no, address)
 
             else:
                 os.system(clear)
@@ -280,15 +334,20 @@ def amount_transfer(account_no, balance, acc_no):
                         with open(filename,'a+') as ap:
                             #rot13() function is called for encoding
                             enc = rot13(d[account_no][0])
+                            current_balance = balance
                             balance = str(float(d[account_no][2]) + float(amount))
                             Message = str("Amount of 'Rs "+str(amount)+"' was received on "+str(time.strftime('%d-%b-%Y at %I:%M %p'))+", through Account Number: "+str(acc_no))
-                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3],Message,d[account_no][5]]
+                            re_new = [account_no,enc,d[account_no][1],balance,d[account_no][3],d[account_no][4],Message]
                             w = csv.writer(ap)
                             w.writerow(re_new)
                             ap.close()
 
                         os.system(clear)
                         print(":: Amount Transferred Successfully! ::")
+                        MSG_from = "You Have Successfully Transferred An Amount Of Rs "+str(amount)+" To A/C #"+str(account_no)+"\n\nYour Net Account Balance Is Rs "+str(float(current_balance) - float(amount))
+                        MSG_to = "You Have Received An Amount Of Rs "+str(amount)+" From A/C #"+str(acc_no)+"\n\nYour Net Account Balance Is Rs "+str(float(balance))
+                        sendmail(address, MSG_from)
+                        sendmail(d[account_no][4], MSG_to)
                         return amount
                 else:
                     amount = 0
@@ -300,7 +359,7 @@ def amount_transfer(account_no, balance, acc_no):
             os.system(clear)
             print("Error :",err)
             print(":: Please Enter Right Amount! ::\n")
-            return amount_transfer(account_no, balance, acc_no)
+            return amount_transfer(account_no, balance, acc_no, address)
     else:
         os.system(clear)
         print (":: No Match Found! ::")
