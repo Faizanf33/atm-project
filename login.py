@@ -199,6 +199,8 @@ def new_account():
                 w = csv.writer(wr)
                 w.writerow(new)
                 wr.close()
+                MSG = "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
+                sendmail(Mail_address, MSG)
                 print ("Account Created Successfully! \n")
                 return login_user()
 
@@ -241,6 +243,8 @@ def new_account():
                             w.writerow(new)
                             wr.close()
                             print ("Account Created Successfully! \n")
+                            MSG = "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
+                            sendmail(Mail_address, MSG)
                             return login_user()
 
                     elif (confirm == '2') or (confirm.lower().startswith('n')):
