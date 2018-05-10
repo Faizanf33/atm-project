@@ -250,7 +250,7 @@ def withdraw(Net_balance, address):
             return withdraw(net_balance, address)
 
 
-def change_pin(Pin):
+def change_pin(Pin, address):
     clear = ('cls' if os.name == 'nt' else 'clear')
     os.system(clear)
     pin_count = 0
