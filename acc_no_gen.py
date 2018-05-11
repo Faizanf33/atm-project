@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, randrange
 from Data import data
 
 def account_no_gen(user_name):
@@ -36,3 +36,10 @@ def account_no_gen(user_name):
 
     else:
         return acc_no
+
+def code():
+    a = 'qwertyuiopasdfghjklzxcvbnm'
+    conf_code = ''
+    for i in range(3):
+        conf_code += str(a[randrange(9)])+str(randrange(9))
+    return conf_code
