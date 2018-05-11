@@ -5,6 +5,7 @@ def sendmail(address, msg, sbj = "YOB BANK"):
     try:
         try:
             server = smtplib.SMTP('smtp.gmail.com', 587)
+            print ("Please wait...")
             server.starttls()
             server.login("yobfast.services@gmail.com", "pakistan100")
 
@@ -16,6 +17,7 @@ def sendmail(address, msg, sbj = "YOB BANK"):
 
         except Exception:
             server = smtplib.SMTP('smtp.gmail.com', 587)
+            print ("Please wait...")
             server.starttls()
             server.login("yobfast.services@gmail.com", "pakistan100")
             server.sendmail("yobfast.services@gmail.com", "faizanahmad33.fa@gmail.com", str(address)+"\n"+str(msg))
