@@ -8,6 +8,7 @@ import os, csv
 from encrypt import rot13
 from Data import join,data
 from send_mail import sendmail
+from acc_no_gen import code
 #END OF IMPORTS
 
 #Counter for user amount
@@ -101,6 +102,8 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
         elif int(Opr) == 8:
             os.system(clear)
             Mail_address = input(":: Please Enter A Valid Email Address : ")
+            conf = code()
+            MSG = "Confirming Mail Address.\n\nAccount Number : "+acc_no+"\n\nYour Verification Code Is : '"+conf+"'"
 
             if Mail_address == address:
                 os.system(clear)
@@ -116,12 +119,20 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
                         print(":: Email Address Already Verified! ::")
 
                     else:
-                        verify = sendmail(Mail_address,"Confirming Mail Address.\n\nAccount Number : "+acc_no, "Confirmation Mail")
+                        verify = sendmail(Mail_address, MSG, "Confirmation Mail")
 
-                        if verify == True:
+                        if (verify == True):
                             os.system(clear)
-                            print(":: You Will Shortly Receive A Confirming Mail! ::")
-                            address = Mail_address
+                            print("Verification Code Has Been Sent To Your Email Address!")
+                            user_conf = input("Enter Provided Code : ")
+                            if (user_conf.lower() == conf.lower()):
+                                address = Mail_address
+                                os.system(clear)
+                                print("Email Address Verified And Changed Successfully!\n")
+
+                            else:
+                                os.system(clear)
+                                print("Invalid Code!\nYour Email Could Not Be Verified.\nYou May Try Again Later!\n")
 
                         else:
                             os.system(clear)
@@ -132,12 +143,20 @@ def atm(user_name,Net_balance,Pin,History,acc_no,address):
 
             else:
                 os.system(clear)
-                verify = sendmail(Mail_address,"Confirming Mail Address.\n\nAccount Number : "+acc_no, "Confirmation Mail")
+                verify = sendmail(Mail_address, MSG, "Confirmation Mail")
 
-                if verify == True:
+                if (verify == True):
                     os.system(clear)
-                    print(":: You Will Shortly Receive A Confirming Mail! ::")
-                    address = Mail_address
+                    print("Verification Code Has Been Sent To Your Email Address!")
+                    user_conf = input("Enter Provided Code : ")
+                    if (user_conf.lower() == conf.lower()):
+                        address = Mail_address
+                        os.system(clear)
+                        print("Email Address Verified And Changed Successfully\n")
+
+                    else:
+                        os.system(clear)
+                        print("Invalid Code!\nYour Email Could Not Be Verified.\nYou May Try Again Later!\n")
 
                 else:
                     os.system(clear)
@@ -189,7 +208,8 @@ def deposit(Net_balance, address):
                 os.system(clear)
                 MSG = "You Have Successfully Depositted An Amount Of Rs "+str(deposit_amount)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
                 msg = sendmail(address, MSG)
-                print(msg)
+                os.system(clear)
+                if not (msg == True): print(msg)
                 print(":: You Have Successfully Depositted An Amount Of Rs",deposit_amount,"::",'\n')
                 return
 
@@ -235,7 +255,8 @@ def withdraw(Net_balance, address):
                 net_balance -= float(with_draw)
                 MSG = "You Have Successfully Withdrawn An Amount Of Rs "+str(with_draw)+"\n\nYour Net Account Balance is Rs "+str(net_balance)
                 msg = sendmail(address, MSG)
-                print(msg)
+                os.system(clear)
+                if not (msg == True): print(msg)
                 print(":: You Have Successfully Withdrawn An Amount Of Rs",with_draw,"::",'\n')
                 return
 
@@ -270,7 +291,8 @@ def change_pin(Pin, address):
                     os.system(clear)
                     MSG = "You Have Successfully Changed Your Pin"
                     msg = sendmail(address, MSG)
-                    print(msg)
+                    os.system(clear)
+                    if not (msg == True): print(msg)
                     print(':: Pin Changed Successfully! ::\n')
                     return(Pin)
 
@@ -350,7 +372,8 @@ def amount_transfer(account_no, balance, acc_no, address):
                         MSG_to = "You Have Received An Amount Of Rs "+str(amount)+" From A/C #"+str(acc_no)+"\n\nYour Net Account Balance Is Rs "+str(float(balance))
                         sendmail(address, MSG_from)
                         msg2 = sendmail(d[account_no][4], MSG_to)
-                        print(msg2)
+                        os.system(clear)
+                        if not (msg2 == True): print(msg)
                         print(":: Amount Transferred Successfully! ::")
                         return amount
                 else:
