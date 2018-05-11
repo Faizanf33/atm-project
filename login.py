@@ -10,7 +10,7 @@ from getpass import getpass as gp
 from ATM import atm
 from encrypt import rot13
 from Data import data,join
-from acc_no_gen import account_no_gen
+from acc_no_gen import account_no_gen, code
 from send_mail import sendmail
 #END OF IMPORTS
 
@@ -165,19 +165,30 @@ def new_account():
 
     full_name = (user_name1.lower())+' '+(user_name2.lower())
     acc_no = account_no_gen(full_name)
-
+    conf = code()
     Mail_address = input("Please Enter A Valid Email Address : ")
-    MSG = "Confirming mail address!"+"\n\n"+"Account Number : "+acc_no
+    MSG = "Confirming mail address!"+"\n\n"+"Account Number : "+acc_no+"\n\nYour Verification Code Is : '"+conf+"'"
     confirm_mail = sendmail(Mail_address, MSG, "Confirmation Mail")
-    if confirm_mail == True:
+
+    if (confirm_mail == True):
         os.system(clear)
-        print("You Will Shortly Receive A Confirming Mail!")
-        confirm_mail = Mail_address
+        print("Verification Code Has Been Sent To Your Email Address!")
+        conf_code = input("Enter Provided Code : ")
+        if (conf_code.lower() == conf.lower()):
+            confirm_mail = Mail_address
+            os.system(clear)
+            print("Email Address Verified!\n")
+
+        else:
+            os.system(clear)
+            print("Invalid Code!\nYour Email Could Not Be Verified.\nYou May Try Again Later!\n")
+            confirm_mail = "None"
 
     else:
         os.system(clear)
-        print(confirm_mail)
+        print(confirm_mail,'\n')
         confirm_mail = "None"
+
 
     print("Your Auto-Generated Pin : ",auto_gen_pin)
     confirm = input("Want To Use This Pin ? \n1. Yes \n2. No \n")
