@@ -373,7 +373,7 @@ def amount_transfer(account_no, balance, acc_no, address):
                         sendmail(address, MSG_from)
                         msg2 = sendmail(d[account_no][4], MSG_to)
                         os.system(clear)
-                        if not (msg2 == True): print(msg)
+                        if not (msg2 == True): print(msg2)
                         print(":: Amount Transferred Successfully! ::")
                         return amount
                 else:
