@@ -87,15 +87,16 @@ def login(d):
             print ("Invalid User!")
             return login_user()
 
+    acc_no = None
     for item in d.keys():
         if user_name.lower() in d[item]:
             acc_no = item
             break
 
         else:
-            acc_no = ' '
+            acc_no = None
 
-    if acc_no == ' ':
+    if acc_no == None:
         os.system(clear)
         print("Account not found/Invalid Name!")
         return login_user()
