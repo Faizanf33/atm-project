@@ -29,7 +29,7 @@ def data():
                 with open(filename, "r") as rd:
                         r = csv.reader(rd)
                         for indiv_user_info in r:
-                            if indiv_user_info == ['Account Number','Name','PIN','Amount','Time','Email Address']:
+                            if (indiv_user_info == ['Account Number','Name','PIN','Amount','Time','Email Address']) or (indiv_user_info == []):
                                 continue
                             else:
                                 try:
@@ -42,7 +42,6 @@ def data():
                                     d[indiv_user_info[0]] = indiv_user_info[1],indiv_user_info[2],indiv_user_info[3],indiv_user_info[4],indiv_user_info[5],"None"
                         return d
 
-    except:
-        IOError or FileNotFoundError
+    except (IOError or FileNotFoundError):
         os.mkdir("Data")
         data()
