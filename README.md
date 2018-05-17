@@ -32,3 +32,15 @@ You can
 
 
 **Please issue errors encountered during process**
+
+### To do:
+
+- GUI
+
+- Accounts handling
+
+- Admin Control
+
+- Debugging
+
+- Use on different operating systems
