@@ -1,4 +1,6 @@
+
 #IMPORTS
+#########################################
 ## USING PYTHON BUILT-IN LIBRARIES
 from __future__ import print_function
 import time,datetime
@@ -12,6 +14,7 @@ from encrypt import rot13
 from Data import data,join
 from acc_no_gen import account_no_gen, code
 from send_mail import sendmail
+###########################################
 #END OF IMPORTS
 
 
@@ -22,6 +25,26 @@ try:
 except:
     pass
 
+Info ="""
+Project Name = ATM
+Author Name = Faizan Ahmad
+Start Date = 5-Mar-2018
+End Date = 30-May-2018
+
+ATM Functionalities(Using Basic Concepts of Python):
+    1. Account Handling
+    2. Activation\De-Activation Of Accounts
+    3. Admin Control
+    4. File Handling(using csv file)
+    5. Account Number Auto-Generation
+    6. Pin Auto-Generation
+    7. Simple Encryption\Decreption
+    8. Date And Time Implication
+    9. Exceptional Handling
+    10. Email Notifier Using SMTP Library
+    11. Amount Transfer
+    12. Made Applicable For Any Version Of Python
+"""
 #Clear the working terminal
 clear = ('cls' if os.name == 'nt' else 'clear')
 
@@ -211,7 +234,7 @@ def new_account():
                 w = csv.writer(wr)
                 w.writerow(new)
                 wr.close()
-                MSG = "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
+                MSG 124114925112= "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
                 vr = sendmail(Mail_address, MSG)
                 os.system(clear)
                 if not (vr == True): print(vr)
@@ -489,6 +512,7 @@ def admin_block(acc_no):
 
 try:
     os.system(clear)
+    # print(Info)
     login_user()
 
 except Exception as exc:
