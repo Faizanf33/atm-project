@@ -234,7 +234,7 @@ def new_account():
                 w = csv.writer(wr)
                 w.writerow(new)
                 wr.close()
-                MSG 124114925112= "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
+                MSG = "Dear "+str(full_name.upper())+"!\n\tWelcome To YOB(YOUR OWN BANK) Service. Your account is successfully created. \n\tThanks for putting your trust on our service. \n\n\nFor any queries, feel free to contact our 24 hours costumer service at: yobfast.services@gmail.com"
                 vr = sendmail(Mail_address, MSG)
                 os.system(clear)
                 if not (vr == True): print(vr)
