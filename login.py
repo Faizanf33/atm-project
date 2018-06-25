@@ -4,7 +4,7 @@
 ## USING PYTHON BUILT-IN LIBRARIES
 from __future__ import print_function
 import time,datetime
-import os, sys, csv
+import os, sys, csv, re
 import random as rd
 from getpass import getpass as gp
 
@@ -175,27 +175,33 @@ def new_account():
     acc_no = account_no_gen(full_name)
     conf = code()
     Mail_address = input("Please Enter A Valid Email Address : ")
-    MSG = "Confirming mail address!"+"\n\n"+"Account Number : "+acc_no+"\n\nYour Verification Code Is : '"+conf+"'"
-    confirm_mail = sendmail(Mail_address, MSG, "Confirmation Mail")
-
-    if (confirm_mail == True):
+    if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", Mail_address):
         os.system(clear)
-        print("Verification Code Has Been Sent To Your Email Address!")
-        conf_code = input("Enter Provided Code : ")
-        if (conf_code.lower() == conf.lower()):
-            confirm_mail = Mail_address
+        confirm_mail = "None"
+        print("____INVALID-MAIL-ADDRESS____")
+
+    else:
+        MSG = "Confirming mail address!"+"\n\n"+"Account Number : "+acc_no+"\n\nYour Verification Code Is : '"+conf+"'"
+        confirm_mail = sendmail(Mail_address, MSG, "Confirmation Mail")
+
+        if (confirm_mail == True):
             os.system(clear)
-            print("Email Address Verified!\n")
+            print("Verification Code Has Been Sent To Your Email Address!")
+            conf_code = input("Enter Provided Code : ")
+            if (conf_code.lower() == conf.lower()):
+                confirm_mail = Mail_address
+                os.system(clear)
+                print("Email Address Verified!\n")
+
+            else:
+                os.system(clear)
+                print("Invalid Code!\nYour Email Could Not Be Verified.\nYou May Try Again Later!\n")
+                confirm_mail = "None"
 
         else:
             os.system(clear)
-            print("Invalid Code!\nYour Email Could Not Be Verified.\nYou May Try Again Later!\n")
+            print(confirm_mail,'\n')
             confirm_mail = "None"
-
-    else:
-        os.system(clear)
-        print(confirm_mail,'\n')
-        confirm_mail = "None"
 
 
     print("Your Auto-Generated Pin : ",auto_gen_pin)
